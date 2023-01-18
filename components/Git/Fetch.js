@@ -1,6 +1,6 @@
 import { Octokit } from "octokit";
 
-const FetchMarkdown = async ({ path }) => {
+const Fetch = async ({ path }) => {
 	const owner = `shipends`;
 	const repo = `ships`;
 
@@ -20,4 +20,4 @@ const FetchMarkdown = async ({ path }) => {
 	return response;
 };
 
-export default FetchMarkdown;
+export default Fetch;
