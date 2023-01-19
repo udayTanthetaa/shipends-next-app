@@ -19,6 +19,8 @@ import rehypeHighlight from "rehype-highlight";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import { Loading } from "../../../components";
+
 export const getStaticProps = async (context) => {
     const octokit = new Octokit({
         auth: process.env.NEXT_PUBLIC_GIT_TOKEN,
@@ -30,14 +32,22 @@ export const getStaticProps = async (context) => {
     const repo = `ships`;
 
     const pathMarkdown = `${params.ship}/${params.sail}.md`;
-    const responseMarkdown = await octokit.request(
-        "GET /repos/{owner}/{repo}/contents/{path}{?ref}",
-        {
-            owner: owner,
-            repo: repo,
-            path: pathMarkdown,
-        }
-    );
+    let responseMarkdown;
+
+    try {
+        responseMarkdown = await octokit.request(
+            "GET /repos/{owner}/{repo}/contents/{path}{?ref}",
+            {
+                owner: owner,
+                repo: repo,
+                path: pathMarkdown,
+            }
+        );
+    } catch (err) {
+        return {
+            notFound: true,
+        };
+    }
 
     const { frontmatter, source } = await Render({ responseMarkdown });
 
@@ -64,61 +74,12 @@ export const getStaticProps = async (context) => {
 
 export const getStaticPaths = async () => {
     const paths = [
-        // {
-        //     params: {
-        //         ship: "hardhat",
-        //         sail: "prologue",
-        //     },
-        // },
         {
             params: {
                 ship: "hardhat",
                 sail: "1_setting_up_hardhat",
             },
         },
-        {
-            params: {
-                ship: "hardhat",
-                sail: "2_writing_smart_contracts",
-            },
-        },
-
-        // {
-        // 	params: {
-        // 		ship: "hardhat",
-        // 		sail: "3_testing_contracts",
-        // 	},
-        // },
-        // {
-        // 	params: {
-        // 		ship: "hardhat",
-        // 		sail: "4_intro_to_artifacts_and_cache",
-        // 	},
-        // },
-        // {
-        // 	params: {
-        // 		ship: "hardhat",
-        // 		sail: "5_calling_contract_functions",
-        // 	},
-        // },
-        // {
-        // 	params: {
-        // 		ship: "hardhat",
-        // 		sail: "6_going_live",
-        // 	},
-        // },
-        // {
-        // 	params: {
-        // 		ship: "hardhat",
-        // 		sail: "7_verifying_on_etherscan",
-        // 	},
-        // },
-        // {
-        // 	params: {
-        // 		ship: "hardhat",
-        // 		sail: "epilogue",
-        // 	},
-        // },
     ];
 
     return {
@@ -129,6 +90,10 @@ export const getStaticPaths = async () => {
 
 const Sail = ({ frontmatter, source, index }) => {
     const Router = useRouter();
+
+    if (Router.isFallback) {
+        return <Loading />;
+    }
 
     return (
         <>

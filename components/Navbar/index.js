@@ -12,7 +12,7 @@ const Navbar = () => {
     useEffect(() => {
         const currActive = getActive(router.asPath);
         setIsActive(currActive);
-    }, []);
+    }, [router]);
 
     return (
         <>

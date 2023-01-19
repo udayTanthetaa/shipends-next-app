@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const MDXComponents = {
     h1: (props) => {
@@ -60,9 +61,14 @@ const MDXComponents = {
         return <span className="font-semibold" {...props} />;
     },
     a: (props) => {
-        if (props.href.slice(0, 2) === "./") {
+        const GetRouter = () => {
             const Router = useRouter();
+            return Router;
+        };
 
+        const Router = GetRouter();
+
+        if (props.href.slice(0, 2) === "./") {
             return (
                 <Link
                     className="text-isBlueLight hover:border-b hover:border-isBlueLight hover:cursor-pointer"
@@ -135,7 +141,7 @@ const MDXComponents = {
         );
     },
     img: (props) => {
-        return <img {...props} className="rounded-lg" />;
+        return <Image {...props} alt="image" className="rounded-lg" />;
     },
     code: (props) => {
         return (
