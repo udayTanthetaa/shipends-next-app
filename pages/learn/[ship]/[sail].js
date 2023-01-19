@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Octokit } from "octokit";
 import { MDXRemote } from "next-mdx-remote";
 
-import { Render, MDXComponents, Loading } from "../../../components";
+import { Constants, Render, MDXComponents, Loading } from "../../../components";
 
 export const getStaticProps = async (context) => {
     const octokit = new Octokit({
@@ -13,8 +13,8 @@ export const getStaticProps = async (context) => {
 
     const { params } = context;
 
-    const owner = `udayTanthetaa`;
-    const repo = `ships`;
+    const owner = Constants.owner;
+    const repo = Constants.repo;
     const pathMarkdown = `${params.ship}/${params.sail}.md`;
 
     let responseMarkdown;
@@ -54,6 +54,7 @@ export const getStaticProps = async (context) => {
             source: source,
             index: index,
         },
+        revalidate: 86400,
     };
 };
 

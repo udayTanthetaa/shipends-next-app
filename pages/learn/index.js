@@ -6,13 +6,15 @@ import tailwindConfig from "../../tailwind.config";
 import { Image } from "next/image";
 import { Octokit } from "octokit";
 
+import { Constants } from "../../components";
+
 export const getStaticProps = async () => {
     const octokit = new Octokit({
         auth: process.env.NEXT_PUBLIC_GIT_TOKEN,
     });
 
-    const owner = `udayTanthetaa`;
-    const repo = `ships`;
+    const owner = Constants.owner;
+    const repo = Constants.repo;
     const path = "index.json";
 
     const response = await octokit.request(
