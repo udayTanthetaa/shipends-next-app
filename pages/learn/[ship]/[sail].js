@@ -83,24 +83,31 @@ const Sail = ({ frontmatter, source, index }) => {
 
     return (
         <>
-            <div className="p-[6px] md:p-[12px] md:pb-[0px] pb-[0px] flex flex-col items-center place-content-center w-full bg-bgSubtle text-xs md:text-sm font-normal">
+            <div
+                className="py-[4px] px-[4px] md:py-[6px] md:px-[8px] flex flex-col items-center place-content-center w-full
+            bg-bgSubtle text-xs md:text-sm font-normal"
+            >
                 <div
                     className="flex flex-col border border-isGreyMuted rounded-lg
-				             text-isZeus text-normal bg-bgInset w-full lg:max-w-[1012px]"
+				             text-isZeus text-normal bg-bgInset w-full lg:max-w-[1412px]"
                 >
                     Some Content
                 </div>
             </div>
 
-            <div className="flex flex-col p-[6px] md:p-[12px] lg:flex-row items-start place-content-center w-full bg-isWhite text-xs md:text-sm font-normal leading-[18px]">
-                {/* NAVIGATION PANEL */}
+            {/* NAVIGATION PANEL */}
+            <div
+                className="flex flex-col p-[6px] md:p-[10px] lg:flex-row items-start place-content-center w-full
+            bg-isWhite text-xs md:text-sm lg:text-md font-normal"
+            >
                 <div
                     className="hidden lg:flex flex-col border border-isGreyMuted rounded-md mr-[12px]
 					text-isGrey bg-isWhite min-w-[200px] max-w-[200px]"
                 >
                     <div
-                        className="mb-[6px] -mt-[1px] -ml-[1px] -mr-[1px] py-[7px] px-2 text-isWhite text-xl font-black rounded-t-md
-					text-isGreyborder border-isGreyMuted text-center bg-gradient-to-br from-isZeus to-isZeus"
+                        className="-ml-[1px] -mr-[1px] -mt-[1px] py-[4px] px-[4px] md:py-[6px] md:px-[8px]
+						font-black bg-gradient-to-br from-isZeus to-isZeus text-isWhite rounded-t-md
+					border border-isGreyMuted text-lg md:text-xl lg:text-2xl text-center mb-[8px]"
                     >
                         {index.parent.charAt(0).toUpperCase() +
                             index.parent.slice(1)}
@@ -124,7 +131,7 @@ const Sail = ({ frontmatter, source, index }) => {
                                 >
                                     <div
                                         className={` truncate rounded-md py-[4px] px-[8px] cursor-pointer 
-								transition ease-in-out delay-50 duration-200 mx-[6px] mb-[6px] 
+								transition ease-in-out delay-50 duration-200 mx-[6px] mb-[6px] lg:mx-[8px] lg:mb-[8px]
 								${
                                     index[section].path === Router.query.sail
                                         ? "bg-isAzureSubtle text-isAzure font-normal"
@@ -143,19 +150,19 @@ const Sail = ({ frontmatter, source, index }) => {
                 {/* MARKDOWN PAGE */}
                 <div
                     className="flex flex-col lg:ml-0 border border-isGreyMuted rounded-lg
-				             text-isZeus text-normal bg-isWhite w-full lg:min-w-[800px] lg:max-w-[800px]"
+				             text-isZeus text-normal bg-isWhite w-full lg:max-w-[1200px]"
                 >
                     <div
                         className="-ml-[1px] -mr-[1px] -mt-[1px] py-[4px] px-[4px] md:py-[6px] md:px-[8px]
 						font-black bg-gradient-to-br from-isAzure to-isAzure text-isWhite rounded-t-md
-					border border-isGreyMuted text-lg md:text-xl text-center"
+					border border-isGreyMuted text-lg md:text-xl lg:text-2xl text-center"
                     >
                         {frontmatter.title}&nbsp;&nbsp;
                         <span className="text-isAzure bg-isWhite rounded-lg text-md md:text-lg py-[2px] px-[4px] md:py-[4px] md:px-[8px]">
                             --takes {frontmatter.takes} min.
                         </span>
                     </div>
-                    <div className="my-[4px] mx-[8px] md:my-[8px] md:mx-[16px]">
+                    <div className="my-[4px] mx-[12px] md:my-[10px] md:mx-[24px] lg:my-[16px] lg:mx-[36px]">
                         <MDXRemote components={MDXComponents} {...source} />
                     </div>
                 </div>
