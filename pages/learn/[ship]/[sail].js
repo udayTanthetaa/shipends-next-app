@@ -1,25 +1,10 @@
-import {
-    FetchIndex,
-    Render,
-    MDXComponents,
-    FetchMarkdown,
-} from "../../../components";
-
-import { MDXRemote } from "next-mdx-remote";
-import { MDXProvider } from "@mdx-js/react";
-
-import { Octokit } from "octokit";
-import { serialize } from "next-mdx-remote/serialize";
-import matter from "gray-matter";
-
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeHighlight from "rehype-highlight";
-
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { Loading } from "../../../components";
+import { Octokit } from "octokit";
+import { MDXRemote } from "next-mdx-remote";
+
+import { Render, MDXComponents, Loading } from "../../../components";
 
 export const getStaticProps = async (context) => {
     const octokit = new Octokit({
@@ -30,8 +15,8 @@ export const getStaticProps = async (context) => {
 
     const owner = `udayTanthetaa`;
     const repo = `ships`;
-
     const pathMarkdown = `${params.ship}/${params.sail}.md`;
+
     let responseMarkdown;
 
     try {
@@ -77,7 +62,7 @@ export const getStaticPaths = async () => {
         {
             params: {
                 ship: "hardhat",
-                sail: "1_setting_up_hardhat",
+                sail: "prologue",
             },
         },
     ];

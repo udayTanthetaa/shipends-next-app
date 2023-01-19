@@ -6,8 +6,6 @@ import tailwindConfig from "../../tailwind.config";
 import { Image } from "next/image";
 import { Octokit } from "octokit";
 
-import { FetchIndex } from "../../components";
-
 export const getStaticProps = async () => {
     const octokit = new Octokit({
         auth: process.env.NEXT_PUBLIC_GIT_TOKEN,
