@@ -57,7 +57,7 @@ const Learn = ({ ships }) => {
 									className="flex h-full w-full flex-col rounded-lg md:rounded-xl lg:rounded-2xl border-[1px] border-isGreyMuted text-isZeus "
 								>
 									<div
-										className="-mx-[1px] -mt-[1px] h-36 rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl border-[1px]
+										className="-mx-[1px] -mt-[1px] h-[120px] md:h-[140px] lg:h-[160px] rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl border-[1px]
 									border-transparent bg-aqua"
 									/>
 
