@@ -1,20 +1,44 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 
 const ShipCard = ({ ship }) => {
+	const [loading, setLoading] = useState(true);
+
+	const loadingImage = () => {
+		return (
+			<>
+				<div
+					className="w-full h-full border-[1px] border-isGrayLightEmphasis4
+					rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl bg-isWhite p-[12px]"
+				>
+					<div className="w-full h-full rounded-lg bg-isGrayLightEmphasis5 md:rounded-xl lg:rounded-2xl animate-pulse"></div>
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<>
 			<div className="flex flex-col w-full h-full">
 				<div className="flex flex-col w-full h-[120px] md:h-[140px] lg:h-[160px]  ">
 					<div className="relative w-full h-full">
-						<Image
-							placeholder="blur"
-							blurDataURL={`./assets/banners/${ship.path}.jpg`}
-							src={`./assets/banners/${ship.path}.jpg`}
-							alt={`${ship.name} banner`}
-							layout={"fill"}
-							className="object-cover object-center border-transparent rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl"
-						/>
+						{loading ? (
+							<>{loadingImage()}</>
+						) : (
+							<Image
+								src={ship.banner}
+								alt={`${ship.name} banner`}
+								layout={"fill"}
+								className="object-cover object-center border-transparent rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl"
+								placeholder="blur"
+								blurDataURL="./assets/banners/hardhat.jpg"
+								onLoadedData={() => {
+									setLoading(false);
+									console.log("loading complete");
+								}}
+							/>
+						)}
 					</div>
 				</div>
 
