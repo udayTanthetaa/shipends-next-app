@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { PageView } from "../lib/ga";
 import { useEffect } from "react";
 
-import Navbar from "../components/Navbar";
+import { Navigation } from "../components";
 
 const App = ({ Component, pageProps }) => {
 	const router = useRouter();
@@ -25,7 +25,7 @@ const App = ({ Component, pageProps }) => {
 	return (
 		<>
 			<div className={`font-RobotoFlex ${router.asPath === "/" ? "bg-isWhite" : "bg-isGrayLightEmphasis6"}`}>
-				<Navbar />
+				<Navigation />
 				<Component {...pageProps} />
 				<Analytics />
 			</div>

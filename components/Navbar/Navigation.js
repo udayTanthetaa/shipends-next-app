@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getIcon } from "./Icon";
 import { getActive } from "./Active";
 import { routes } from "./Routes";
 
-const Navbar = () => {
+const Navigation = () => {
 	const router = useRouter();
 	const [isActive, setIsActive] = useState("");
 
@@ -50,4 +49,4 @@ const Navbar = () => {
 	);
 };
 
-export default Navbar;
+export default Navigation;

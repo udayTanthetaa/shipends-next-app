@@ -10,7 +10,7 @@ const ShipIndex = ({ ships }) => {
 
 					<div className="grid grid-cols-1 gap-[12px] sm:grid-cols-2 md:grid-cols-3">
 						{ships.map((ship, index) => {
-							return <ShipCard index={index} ship={ship} />;
+							return <ShipCard key={index} ship={ship} />;
 						})}
 					</div>
 				</div>

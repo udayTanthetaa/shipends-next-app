@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Octokit } from "octokit";
-import { Page, Constants, Render, Loading } from "../../../components";
+import { Page, Constants, Render } from "../../../components";
 
 export const getStaticProps = async (context) => {
 	const octokit = new Octokit({
@@ -67,7 +67,7 @@ export const getStaticPaths = async () => {
 const Sail = ({ frontmatter, source, index }) => {
 	const Router = useRouter();
 	if (Router.isFallback) {
-		return <Loading />;
+		return <>Loading...</>;
 	}
 
 	return (

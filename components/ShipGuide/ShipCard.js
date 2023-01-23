@@ -1,14 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const ShipCard = ({ index, ship }) => {
+const ShipCard = ({ ship }) => {
 	return (
 		<>
-			<div key={index} className="flex flex-col w-full h-full">
+			<div className="flex flex-col w-full h-full">
 				<div className="flex flex-col w-full h-[120px] md:h-[140px] lg:h-[160px]  ">
 					<div className="relative w-full h-full">
 						<Image
 							src={ship.banner}
+							alt={`${ship.name} banner`}
 							layout={"fill"}
 							className="object-cover object-center border-transparent rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl"
 						/>
@@ -24,7 +25,7 @@ const ShipCard = ({ index, ship }) => {
 							<div className="relative w-full h-full">
 								<Image
 									src={ship.logo}
-									alt={`${ship.name} banner`}
+									alt={`${ship.name} logo`}
 									layout={"fill"}
 									className="object-cover object-center rounded-md shadow-md md:rounded-lg lg:rounded-xl"
 								/>
