@@ -52,29 +52,26 @@ const Navbar = () => {
                 </div>
             </div> */}
 
-			<div className="flex flex-col w-full place-content-center items-center sticky top-0 bg-isZeus text-center">
-				<div className="flex flex-row w-full max-w-xl justify-between py-[6px] px-[12px]">
+			<div
+				className="z-50 flex flex-col w-full place-content-center items-center sticky top-0 bg-isGrayDarkEmphasis6 text-center
+                py-[8px] px-[12px] 
+            "
+			>
+				<div className="flex flex-row w-full max-w-[1182px] justify-between">
 					{routes.map((route, index) => {
 						return (
 							<Link href={`${route.path}`} key={index}>
 								<div
 									id={`${route.id}`}
-									className={`px-[6px] rounded-lg text-md md:text-lg lg:text-xl
-                                    delay-50  transition duration-300 ease-in-out tracking-tight font-bold 
+									className={`px-[10px] md:px-[13px] lg:px-[16px] rounded-lg text-lg md:text-xl lg:text-2xl
+                                    delay-50 transition duration-300 ease-in-out tracking-tight font-bold 
                                     ${
 										isActive === route.id
-											? "text-isZeus bg-isWhite "
-											: "text-isBianca hover:bg-isWhite hover:text-isZeus"
+											? "text-isGrayDarkEmphasis6 bg-isGrayLightEmphasis6 "
+											: "text-isGrayLightEmphasis6 hover:bg-isGrayLightEmphasis6 hover:text-isGrayDarkEmphasis6"
 									}`}
 								>
 									{route.display}
-									{/* <svg
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 24 24"
-										className={`w-8 h-8 ${isActive === route.id ? "fill-bianca" : "fill-indigo"}`}
-									>
-										{getIcon(route.id)}
-									</svg> */}
 								</div>
 							</Link>
 						);
