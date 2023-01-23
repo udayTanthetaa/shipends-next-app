@@ -1,7 +1,8 @@
 import Render from "./Markdown/Render";
 import MDXComponents from "./Markdown/MDXComponents";
-import Loading from "./Temporary/Loading";
 import { Constants } from "./Git/Constants";
 import Cta from "./Home/Cta";
+import Page from "./Markdown/Page";
+import ShipIndex from "./ShipGuide/ShipIndex";
 
-export { Cta, Constants, Render, MDXComponents, Loading };
+export { Page, Cta, Constants, Render, MDXComponents, ShipIndex };

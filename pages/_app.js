@@ -24,11 +24,9 @@ const App = ({ Component, pageProps }) => {
 
 	return (
 		<>
-			<div className="font-RobotoFlex bg-isGrayLightEmphasis6">
+			<div className={`font-RobotoFlex ${router.asPath === "/" ? "bg-isWhite" : "bg-isGrayLightEmphasis6"}`}>
 				<Navbar />
-
 				<Component {...pageProps} />
-
 				<Analytics />
 			</div>
 		</>

@@ -24,7 +24,7 @@ const Cta = () => {
 	`;
 	return (
 		<>
-			<div className=" flex flex-col bg-isGrayLightEmphasis6 bg-top">
+			<div className=" flex flex-col bg-isWhite bg-top">
 				<div className="flex flex-col items-center w-full min-h-screen text-center place-content-start">
 					{/* TAGLINE */}
 					<ResponsiveFontSize>
@@ -34,7 +34,7 @@ const Cta = () => {
 						>
 							<div
 								className="flex flex-col px-1 text-transparent
-				bg-gradient-to-r from-isOrangeDark to-isPinkDark bg-clip-text"
+				bg-gradient-to-r from-isMintDark to-isGreenDark bg-clip-text"
 							>
 								ship cool products
 							</div>
@@ -75,10 +75,12 @@ const Cta = () => {
 					{/* GET STARTED */}
 					<Link href="/learn" className="pt-[4px]">
 						<div
-							className="border-animate shadow-[0_0_0_0px_#70D7FF]
-							hover:shadow-[0_0_0_6px_#70D7FF]
+							className="border-animate
 				 px-[12px] py-[4px] rounded-lg md:rounded-xl lg:rounded-xl
-				 bg-gradient-to-br from-isBlueLight to-isBlueDark"
+				 bg-gradient-to-br from-isTealLight to-isTealDark shadow-md
+				 hover:from-isTealDark hover:to-isTealDarkEmphasis
+				 delay-50 transition duration-300 ease-in-out
+				 "
 						>
 							<div
 								className="

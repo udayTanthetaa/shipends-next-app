@@ -16,48 +16,16 @@ const Navbar = () => {
 
 	return (
 		<>
-			{/* <div className="sticky bottom-0 flex flex-col items-center place-content-center bg-transparent -mt-[90px]">
-                <div className="p-3 flex flex-col w-full max-w-2xl items-center place-content-center">
-                    <div
-                        className="p-2 flex flex-row w-full bg-bianca items-center place-content-center rounded-lg
-					space-x-6 bg-opacity-100"
-                    >
-                        {routes.map((route, index) => {
-                            return (
-                                <Link href={`${route.path}`} key={index}>
-                                    <div
-                                        id={`${route.id}`}
-                                        className={`p-2 rounded-lg ${
-                                            isActive === route.id
-                                                ? "bg-azure"
-                                                : "bg-none"
-                                        }`}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            className={`w-8 h-8 ${
-                                                isActive === route.id
-                                                    ? "fill-bianca"
-                                                    : "fill-indigo"
-                                            }`}
-                                        >
-                                            {getIcon(route.id)}
-                                        </svg>
-                                    </div>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </div>
-            </div> */}
-
 			<div
-				className="z-50 flex flex-col w-full place-content-center items-center sticky top-0 bg-isGrayDarkEmphasis6 text-center
-                py-[8px] px-[12px] 
+				className="z-50 flex flex-col w-full place-content-center items-center sticky top-0
+				text-center py-[8px] px-[12px]
             "
 			>
-				<div className="flex flex-row w-full max-w-[1182px] justify-between">
+				<div
+					className={`flex flex-row w-full max-w-[1182px] justify-between 
+					rounded-md md:rounded-lg lg:rounded-xl shadow-md
+					${router.asPath === "/" ? "bg-isGrayLightEmphasis6" : "bg-isWhite"} bg-opacity-50 backdrop-blur-md p-[12px]`}
+				>
 					{routes.map((route, index) => {
 						return (
 							<Link href={`${route.path}`} key={index}>
@@ -67,8 +35,8 @@ const Navbar = () => {
                                     delay-50 transition duration-300 ease-in-out tracking-tight font-bold 
                                     ${
 										isActive === route.id
-											? "text-isGrayDarkEmphasis6 bg-isGrayLightEmphasis6 "
-											: "text-isGrayLightEmphasis6 hover:bg-isGrayLightEmphasis6 hover:text-isGrayDarkEmphasis6"
+											? "text-isWhite bg-isGrayDarkEmphasis6 "
+											: "text-isGrayDarkEmphasis6 hover:bg-isGrayDarkEmphasis hover:text-isWhite"
 									}`}
 								>
 									{route.display}
