@@ -19,8 +19,6 @@ const ShipCard = ({ ship }) => {
 		);
 	};
 
-	// ${loading ? "hidden" : "block"}`}
-
 	return (
 		<>
 			<div className="flex flex-col w-full h-full">

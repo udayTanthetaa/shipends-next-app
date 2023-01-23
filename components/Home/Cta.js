@@ -32,7 +32,7 @@ const Cta = () => {
 							className="mt-[30px] md:mt-[40px] lg:mt-[50px]
 				 w-full max-w-5xl flex flex-col font-black place-content-center"
 						>
-							<div className="flex flex-col px-1 text-transparent bg-gradient-to-r from-isMintDark to-isGreenDark bg-clip-text">
+							<div className="flex flex-col px-1 text-transparent bg-gradient-to-r from-isYellowDark to-magenta bg-clip-text">
 								ship cool products
 							</div>
 							<div
