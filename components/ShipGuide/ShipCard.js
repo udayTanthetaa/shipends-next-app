@@ -8,7 +8,9 @@ const ShipCard = ({ ship }) => {
 				<div className="flex flex-col w-full h-[120px] md:h-[140px] lg:h-[160px]  ">
 					<div className="relative w-full h-full">
 						<Image
-							src={ship.banner}
+							placeholder="blur"
+							blurDataURL={`./assets/banners/${ship.path}.jpg`}
+							src={`./assets/banners/${ship.path}.jpg`}
 							alt={`${ship.name} banner`}
 							layout={"fill"}
 							className="object-cover object-center border-transparent rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl"
