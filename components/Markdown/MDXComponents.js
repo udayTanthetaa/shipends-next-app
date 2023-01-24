@@ -21,8 +21,9 @@ const MDXComponents = {
 	h3: (props) => {
 		return (
 			<h3
-				className="text-md mb-[6px] 
-                font-semibold md:mb-[8px] md:text-lg"
+				className="flex flex-col items-center mt-[8px] md:mt-[12px] lg:mt-[16px] mb-[8px] md:mb-[12px] lg:mb-[16px]
+				text-md md:text-lg lg:text-xl
+				font-semibold text-center"
 				{...props}
 			/>
 		);
@@ -113,8 +114,8 @@ const MDXComponents = {
 	code: (props) => {
 		return (
 			<span
-				className="
-				inline-block rounded-md bg-isGrayLightEmphasis5 align-middle font-mono text-isGrayDarkEmphasis4
+				className="inline-block align-middle
+				 rounded-md bg-isGrayLightEmphasis5 font-mono text-isGrayDarkEmphasis4
 				 py-[0.5px] px-[4px] md:py-[1px] md:px-[5px] lg:[1.5px] lg:px-[6px] font-medium
 				 text-2xs md:text-xs lg:text-sm"
 				{...props}
