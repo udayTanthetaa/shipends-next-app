@@ -1,13 +1,57 @@
+import { useState } from "react";
+
 const Profile = () => {
+	const status = {
+		signIn: {
+			id: "signIn",
+			display: "Sign in",
+			alterDisplay: "Don't have an account?",
+			alterButton: "Create one.",
+			alterId: "createAccount",
+			emailDisplay: "Email",
+			passwordDisplay: "Password",
+		},
+		createAccount: {
+			id: "createAccount",
+			display: "Create New Account",
+			alterDisplay: "Have an account already?",
+			alterButton: "Sign in.",
+			alterId: "signIn",
+			emailDisplay: "Email",
+			passwordDisplay: "Set Password",
+		},
+		resetPassword: {
+			id: "resetPassword",
+			display: "Reset Password",
+			alterDisplay: "Don't have an account?",
+			alterButton: "Create one.",
+			alterId: "createAccount",
+			emailDisplay: "Email",
+			passwordDisplay: "New Password",
+		},
+	};
+
+	const [currStatus, setCurrStatus] = useState(status["signIn"]);
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
 	return (
 		<>
 			<div className="flex flex-col min-h-screen bg-isGrayLightEmphasis6 p-[12px] place-content-start w-full items-center">
 				<div className="flex flex-col items-center w-full ">
-					<form
-						className="flex flex-col w-full max-w-2xl rounded-lg bg-isWhite md:rounded-xl lg:rounded-2xl
-                    py-[12px] px-[20px] "
+					<div
+						className="flex flex-col w-full max-w-2xl rounded-t-lg bg-isBlueDark md:rounded-t-xl lg:rounded-t-2xl
+                    py-[4px] px-[12px] text-isWhite"
 					>
-						<div className="flex flex-col w-full py-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:py-[8px] lg:py-[10px]">
+						<div className="flex flex-col items-center w-full text-lg font-black md:text-xl lg:text-2xl text-is">
+							{currStatus.display}
+						</div>
+					</div>
+					<form
+						className="flex flex-col w-full max-w-2xl bg-isWhite 
+                    py-[12px] px-[12px] "
+					>
+						<div className="flex flex-col w-full pb-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:pb-[8px] lg:pb-[10px]">
 							<div className="flex flex-row items-center ml-[2px] mb-[2px] md:ml-[3px] md:mb-[3px] lg:mb-[4px] lg:ml-[4px]">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -22,20 +66,24 @@ const Profile = () => {
 									className="text-md font-extrabold text-isGrayDarkEmphasis6 md:text-lg lg:text-xl
                                     ml-[12px]"
 								>
-									Email
+									{currStatus.emailDisplay}
 								</div>
 							</div>
 
 							<input
 								type="email"
 								placeholder="you@email.com"
+								value={email}
+								onChange={(e) => {
+									setEmail(e.target.value);
+								}}
 								className="w-full rounded-md appearance-none focus:outline-none bg-isGrayLightEmphasis6 md:rounded-lg lg:rounded-xl
                                 py-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:py-[8px] lg:py-[10px] font-medium text-isGrayLight
                                 text-xs md:text-sm lg:text-md"
 							/>
 						</div>
 
-						<div className="flex flex-col w-full py-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:py-[8px] lg:py-[10px]">
+						<div className="flex flex-col w-full pb-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:pb-[8px] lg:pb-[10px]">
 							<div className="flex flex-row items-center ml-[2px] mb-[2px] md:ml-[3px] md:mb-[3px] lg:mb-[4px] lg:ml-[4px]">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -51,29 +99,57 @@ const Profile = () => {
 									className="text-md font-extrabold text-isGrayDarkEmphasis6 md:text-lg lg:text-xl
                                     ml-[12px]"
 								>
-									Password
+									{currStatus.passwordDisplay}
 								</div>
 							</div>
 
 							<input
 								type="password"
 								placeholder="password"
+								value={password}
+								onChange={(e) => {
+									setPassword(e.target.value);
+								}}
 								className="w-full rounded-md appearance-none focus:outline-none bg-isGrayLightEmphasis6 md:rounded-lg lg:rounded-xl
                                 py-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:py-[8px] lg:py-[10px] font-medium text-isGrayLight
                                 text-xs md:text-sm lg:text-md"
 							/>
 						</div>
 
-						<div className="flex flex-col w-full py-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:py-[8px] lg:py-[10px] items-end">
+						<div className="flex flex-col w-full pb-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:pb-[8px] lg:pb-[10px] items-end">
 							<button
-								className="rounded-md appearance-none focus:outline-none bg-isGrayLightEmphasis6 md:rounded-lg lg:rounded-xl
-                                py-[4px] px-[6px] md:px-[10px] lg:px-[12px] md:py-[8px] lg:py-[10px] font-medium text-isGrayLight
-                                text-xs md:text-sm lg:text-md"
+								onClick={(e) => {
+									e.preventDefault();
+								}}
+								className="rounded-md appearance-none focus:outline-none  md:rounded-lg lg:rounded-xl
+                                 font-black text-md md:text-lg lg:text-xl px-[12px] py-[4px]
+                                bg-isGreenDark text-isWhite hover:text-isWhite hover:bg-isGreenDarkEmphasis
+							    delay-50 transition duration-300 ease-in-out"
 							>
 								Submit
 							</button>
 						</div>
 					</form>
+					<div
+						className="flex flex-col w-full max-w-2xl rounded-b-lg bg-isGrayLightEmphasis3 md:rounded-b-xl lg:rounded-b-2xl
+                    py-[4px] px-[12px] text-isGrayDarkEmphasis3"
+					>
+						<div className="flex flex-row items-center content-center w-full text-xs font-black place-content-center md:text-sm lg:text-md">
+							{currStatus.alterDisplay}&nbsp;{" "}
+							<button
+								onClick={(e) => {
+									e.preventDefault();
+									// console.log(status[currStatus.alterId]);
+									setCurrStatus(status[currStatus.alterId]);
+								}}
+								className="px-[6px] rounded-md  text-isBlueDark bg-isGrayLightEmphasis5
+                                hover:text-isBlueDarkEmphasis hover:bg-isGrayLightEmphasis6
+                                delay-50 transition duration-300 ease-in-out"
+							>
+								{currStatus.alterButton}
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</>
