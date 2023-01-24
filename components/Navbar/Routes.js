@@ -9,8 +9,9 @@ export const routes = [
 		path: "/learn",
 		display: "explore",
 	},
-	// {
-	// 	id: "profile",
-	// 	path: "/profile",
-	// },
+	{
+		id: "profile",
+		path: "/profile",
+		display: "you",
+	},
 ];
