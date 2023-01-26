@@ -53,7 +53,9 @@ const ShipCard = ({ ship }) => {
 							</div>
 						</div>
 
-						<div className="ml-[12px] text-lg font-bold md:text-xl lg:text-2xl">{ship.name}</div>
+						<div className="ml-[12px] text-lg font-bold md:text-xl lg:text-2xl">
+							{ship.name}
+						</div>
 					</div>
 
 					<hr className="border-t-[1px] border-isGrayLightEmphasis4" />

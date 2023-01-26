@@ -4,10 +4,11 @@ import { Analytics } from "@vercel/analytics/react";
 import { useRouter } from "next/router";
 import { PageView } from "../lib/ga";
 import { useEffect } from "react";
+import { SessionProvider } from "next-auth/react";
 
 import { Navigation } from "../components";
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 	const router = useRouter();
 
 	useEffect(() => {
@@ -25,9 +26,11 @@ const App = ({ Component, pageProps }) => {
 	return (
 		<>
 			<div className={`font-RobotoFlex ${router.asPath === "/" ? "bg-isWhite" : "bg-isGrayLightEmphasis6"}`}>
-				<Navigation />
-				<Component {...pageProps} />
-				<Analytics />
+				<SessionProvider session={session}>
+					<Navigation />
+					<Component {...pageProps} />
+					<Analytics />
+				</SessionProvider>
 			</div>
 		</>
 	);
