@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
 
 const Profile = () => {
-	const { data: session, status } = useSession();
-
 	// const status = {
 	// 	createAccount: {},
 	// 	resetPassword: {},
@@ -16,8 +13,8 @@ const Profile = () => {
 
 	// const [currStatus, setCurrStatus] = useState(status["createAccount"]);
 
-	const createAccount = async () => {
-		const res = await fetch("/api/auth/signup", {
+	const signUp = async () => {
+		const res = await fetch("/api/auth/signUp", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -34,36 +31,33 @@ const Profile = () => {
 		alert(data.message);
 	};
 
+	const logIn = async () => {
+		const res = await fetch("/api/auth/login", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				username: username,
+				password: password,
+			}),
+		});
+	};
+
 	return (
 		<>
 			<h1>Profile</h1>
-			<hr />
-			{session ? "Signed in." : "Not signed in."}
+
 			<hr />
 			<button
 				onClick={(e) => {
 					e.preventDefault();
-					createAccount();
+					signUp();
 				}}
 			>
 				Sign Up
 			</button>
 			<hr />
-			<button
-				onClick={async (e) => {
-					e.preventDefault();
-
-					const status = await signIn("credentials", {
-						redirect: false,
-						username: username,
-						password: password,
-					});
-
-					console.log(session);
-				}}
-			>
-				Sign In
-			</button>
 		</>
 	);
 };
