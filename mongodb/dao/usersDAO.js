@@ -1,4 +1,6 @@
 import ObjectID from "mongodb";
+import { hash, compare } from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 let users;
 
@@ -22,7 +24,7 @@ export default class UsersDAO {
 			const userDoc = {
 				email: email,
 				username: username,
-				password: password,
+				password: await hash(password, 12),
 			};
 
 			const checkExisitingUser = await users.findOne({
@@ -59,11 +61,94 @@ export default class UsersDAO {
 		}
 	};
 
-	static putUser = async (req, res) => {
+	static verifyUser = async (req, res) => {
 		try {
-			const { username, email, password } = req.body;
+			const { username, password } = req.body;
+
+			const userDoc = await users.findOne({
+				username: username,
+			});
+
+			if (!userDoc) {
+				res.status(404).json({
+					code: 404,
+					message: "User not found.",
+				});
+
+				return;
+			}
+
+			const checkPassword = await compare(password, userDoc.password);
+
+			if (!checkPassword) {
+				res.status(401).json({
+					code: 401,
+					message: "Incorrect password.",
+				});
+			} else {
+				const token = jwt.sign(
+					{
+						id: userDoc._id,
+					},
+					process.env.NEXT_PUBLIC_JWT_SECRET,
+					{
+						allowInsecureKeySizes: true,
+						expiresIn: 365 * 24 * 60 * 60,
+					}
+				);
+
+				res.status(200).json({
+					code: 200,
+					message: "Login success.",
+					token: token,
+				});
+			}
 		} catch (err) {
 			console.error(`Unable to put user => ${err}`);
+
+			return {
+				error: err,
+			};
+		}
+	};
+
+	static updateEmail = async (req, res) => {
+		try {
+			const { token, email } = req.body;
+
+			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
+
+			if (!verified) {
+				res.status(401).json({
+					code: 401,
+					message: "Unauthorized.",
+				});
+
+				return;
+			}
+
+			const id = jwt.decode(token.session);
+			console.log(id);
+
+			// const userDoc = await users.findOne({
+			// 	_id: id,
+			// });
+
+			// if (!userDoc) {
+			// 	res.status(404).json({
+			// 		code: 404,
+			// 		message: "User not found.",
+			// 	});
+
+			// 	return;
+			// }
+
+			res.status(200).json({
+				code: 200,
+				message: "Updated.",
+			});
+		} catch (err) {
+			console.error(`Unable to put email => ${err}`);
 
 			return {
 				error: err,

@@ -7,7 +7,7 @@ const handler = async (req, res) => {
 			const client = await clientPromise;
 
 			await UsersDAO.injectDB(client);
-			await UsersDAO.verifyUser(req, res);
+			await UsersDAO.updateEmail(req, res);
 		} catch (err) {
 			res.status(500).json({
 				code: 500,
