@@ -9,8 +9,7 @@ const ShipCard = ({ ship }) => {
 		return (
 			<>
 				<div
-					className={`w-full h-full border-[1px] border-isGrayLightEmphasis4
-					rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl bg-isWhite p-[12px]
+					className={`w-full h-full rounded-lg md:rounded-xl lg:rounded-2xl bg-isWhite p-[12px]
 					${loading ? "block" : "hidden"}`}
 				>
 					<div className="w-full h-full rounded-lg bg-isGrayLightEmphasis5 md:rounded-xl lg:rounded-2xl animate-pulse"></div>
@@ -21,75 +20,64 @@ const ShipCard = ({ ship }) => {
 
 	return (
 		<>
-			<div className="flex flex-col w-full h-full">
-				<div className="flex flex-col w-full h-[120px] md:h-[140px] lg:h-[160px]  ">
-					<div className="relative w-full h-full">
-						<LoadingImage />
-						<Image
-							src={ship.banner}
-							alt={`${ship.name} banner`}
-							layout={"fill"}
-							className={`object-cover object-center border-transparent rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl`}
-							onLoadingComplete={() => {
-								setLoading(false);
-							}}
-						/>
+			<Link
+				href={`/learn/${ship.path}/content`}
+				passHref
+				className="relative w-full h-[100px] md:h-[140px] lg:h-[200px]"
+			>
+				<div className="relative flex flex-col items-center w-full h-[100px] md:h-[140px] lg:h-[200px]">
+					<div className="absolute flex flex-col w-full h-[100px] md:h-[140px] lg:h-[200px]  ">
+						<div className="relative w-full h-full">
+							<LoadingImage />
+							<Image
+								src={ship.banner}
+								alt={`${ship.name} banner`}
+								layout={"fill"}
+								className={`object-cover object-center border-transparent rounded-lg md:rounded-xl lg:rounded-2xl`}
+								onLoadingComplete={() => {
+									setLoading(false);
+								}}
+							/>
+						</div>
 					</div>
-				</div>
 
-				<div
-					className="flex w-full grow flex-col rounded-b-lg md:rounded-b-xl lg:rounded-b-2xl border-[1px]
-									border-t-[0px] border-isGrayLightEmphasis4 text-isGrayDarkEmphasis6 bg-isWhite"
-				>
-					<div className="my-[12px] mx-[12px] flex flex-row items-center">
-						<div className="flex flex-col w-6 h-6 md:h-7 md:w-7 lg:h-8 lg:w-8 ">
-							<div className="relative w-full h-full">
-								<Image
-									src={ship.logo}
-									alt={`${ship.name} logo`}
-									layout={"fill"}
-									className="object-cover object-center rounded-md shadow-md md:rounded-lg lg:rounded-xl"
+					<div className="absolute right-0 flex flex-col place-content-center px-[12px] py-[12px]">
+						<div
+							className="flex flex-row items-center rounded-md md:rounded-lg lg:rounded-xl bg-isWhite
+					p-[2px] bg-opacity-100 backdrop-blur-sm"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								className=" fill-isGreenDark mr-[2px]
+									w-[18px] h-[18px] md:w-[20px] md:h-[20px] lg:w-[22px] lg:h-[22px]"
+							>
+								<path
+									fillRule="evenodd"
+									d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z"
+									clipRule="evenodd"
 								/>
+							</svg>
+							<div className="mr-[2px] font-semibold">{ship.takes} min.</div>
+						</div>
+					</div>
+
+					<div
+						className="absolute w-full bottom-0 flex flex-row place-content-end text-isGrayDarkEmphasis6 px-[12px]
+					items-center"
+					>
+						<div
+							className="flex flex-col w-full h-full bg-isWhite mb-[12px] py-[4px] px-[12px]
+						rounded-md md:rounded-lg lg:rounded-xl bg-opacity-100 backdrop-blur-sm items-center
+						"
+						>
+							<div className="w-full font-semibold leading-3 tracking-tight text-center text-md md:text-lg lg:text-xl">
+								{ship.name}
 							</div>
 						</div>
-
-						<div className="ml-[12px] text-lg font-bold md:text-xl lg:text-2xl">
-							{ship.name}
-						</div>
-					</div>
-
-					<hr className="border-t-[1px] border-isGrayLightEmphasis4" />
-
-					<div className="m-[12px] text-xs md:text-sm lg:text-md leading-4 text-isGrayLight md:m-[12px] ">
-						{ship.description}
-					</div>
-
-					<div className="mt-auto mb-[12px] mr-[12px] flex flex-col items-end">
-						<Link href={`/learn/${ship.path}/prologue`} passHref>
-							{ship.status === "active" ? (
-								<button
-									className="delay-50 rounded-lg md:rounded-xl lg:rounded-2xl  py-[4px]
-                                    px-[10px] text-sm font-bold text-isGrayDark3 transition duration-200 ease-in-out
-                                    bg-isGrayLightEmphasis5 hover:bg-isGrayLight hover:text-isGrayLightEmphasis6 md:text-md lg:text-lg
-                                	"
-								>
-									Let&apos;s Ship!
-								</button>
-							) : (
-								<button
-									disabled
-									className="delay-50 cursor-not-allowed rounded-lg md:rounded-xl lg:rounded-2xl  py-[4px] 
-									px-[10px] text-sm font-bold text-isGrayDark3 transition duration-200 ease-in-out
-                                    bg-isGrayLightEmphasis5 hover:bg-isGrayLight hover:text-isGrayLightEmphasis6 md:text-md lg:text-lg
-                                    "
-								>
-									Coming Soon.
-								</button>
-							)}
-						</Link>
 					</div>
 				</div>
-			</div>
+			</Link>
 		</>
 	);
 };

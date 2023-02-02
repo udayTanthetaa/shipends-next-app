@@ -52,8 +52,8 @@ export const getStaticPaths = async () => {
 	const paths = [
 		{
 			params: {
-				ship: "hardhat",
-				sail: "prologue",
+				ship: "deploy_testnet",
+				sail: "content",
 			},
 		},
 	];
