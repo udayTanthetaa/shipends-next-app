@@ -75,17 +75,32 @@ const SectionPanel = ({ index }) => {
 						href={`https://github.com/${Constants.owner}/${Constants.repo}/blob/main/${Router.query.ship}/${Router.query.sail}.md`}
 						target="_blank"
 						rel="noreferrer noopener"
+						className="flex flex-col group"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							className="w-6 h-6 md:h-7 md:w-7 lg:h-8 lg:w-8 fill-isIndgioDark stroke-none hover:fill-isIndgioDarkEmphasis "
-						>
-							<title>Edit on GitHub</title>
-							<path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path>
-						</svg>
+						<div className="flex flex-row items-center bg-isGrayDark2 group-hover:bg-isGrayDarkEmphasis6 delay-50 duration-300 ease-in-out py-[3px] md:py-[4px] lg:py-[5px] px-[7px] md:px-[8px] lg:px-[9px] rounded-md md:rounded-lg lg:rounded-xl">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								className="mr-[6px] w-5 h-5 md:h-6 md:w-6 lg:h-7 lg:w-7 fill-isGrayLightEmphasis6 group-hover:fill-isWhite stroke-none delay-50 duration-300 ease-in-out"
+							>
+								<path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+								<path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+							</svg>
+
+							<div className="text-sm font-bold transition duration-300 ease-in-out delay-50 md:text-md lg:text-lg text-isGrayLightEmphasis6 group-hover:text-isWhite ">
+								Edit on GitHub
+							</div>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								className="ml-[6px] w-5 h-5 md:h-6 md:w-6 lg:h-7 lg:w-7 fill-isGrayLightEmphasis6 group-hover:fill-isWhite stroke-none delay-50 duration-300 ease-in-out"
+							>
+								<title>Edit on GitHub</title>
+								<path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path>
+							</svg>
+						</div>
 					</Link>
 				</div>
 			</div>

@@ -125,11 +125,11 @@ const MDXComponents = {
 	pre: (props) => {
 		return (
 			<pre
-				className="mb-[8px] md:mb-[12px] lg:mb-[16px] md:py-[8px] md:px-[16px]
-			 overflow-x-auto rounded-md md:rounded-lg lg:rounded-xl bg-isGrayLightEmphasis6 py-[6px] px-[12px]
+				className="mb-[8px] md:mb-[14px] md:py-[8px] md:px-[14px] px-[12px]
+			 overflow-x-auto rounded-md md:rounded-lg lg:rounded-xl bg-isGrayLightEmphasis6 py-[6px]
 			 text-2xs md:text-xs lg:text-sm"
 			>
-				<code className="font-mono" {...props} />
+				<code {...props} />
 			</pre>
 		);
 	},
