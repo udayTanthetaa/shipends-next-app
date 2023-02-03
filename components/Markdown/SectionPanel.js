@@ -71,7 +71,7 @@ const SectionPanel = ({ index }) => {
 						</div>
 					</div> */}
 
-					<div className="flex flex-row items-center group bg-isGreenDark hover:bg-isGreenLight delay-50 duration-300 ease-in-out py-[3px] md:py-[4px] lg:py-[5px] px-[7px] md:px-[8px] lg:px-[9px] rounded-md md:rounded-lg lg:rounded-xl">
+					<div className="flex flex-row items-center group bg-isGreenDark hover:bg-isGreenDarkEmphasis delay-50 duration-300 ease-in-out py-[3px] md:py-[4px] lg:py-[5px] px-[7px] md:px-[8px] lg:px-[9px] rounded-md md:rounded-lg lg:rounded-xl">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
@@ -126,7 +126,7 @@ const SectionPanel = ({ index }) => {
 						rel="noreferrer noopener"
 						className="flex flex-col group"
 					>
-						<div className="flex flex-row items-center bg-isGrayDark group-hover:bg-isGrayDark3 delay-50 duration-300 ease-in-out py-[3px] md:py-[4px] lg:py-[5px] px-[7px] md:px-[8px] lg:px-[9px] rounded-md md:rounded-lg lg:rounded-xl">
+						<div className="flex flex-row items-center bg-isGrayLight2 group-hover:bg-isGrayDark4 delay-50 duration-300 ease-in-out py-[3px] md:py-[4px] lg:py-[5px] px-[7px] md:px-[8px] lg:px-[9px] rounded-md md:rounded-lg lg:rounded-xl">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 24 24"
