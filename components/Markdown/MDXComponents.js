@@ -29,7 +29,9 @@ const MDXComponents = {
 		);
 	},
 	p: (props) => {
-		return <div className="mb-[8px] md:mb-[12px] lg:mb-[16px]" {...props} />;
+		return (
+			<div className="mb-[8px] md:mb-[12px] lg:mb-[16px]" {...props} />
+		);
 	},
 	em: (props) => {
 		return <span className="italic" {...props} />;
@@ -63,9 +65,16 @@ const MDXComponents = {
 		} else if (props.href.charAt(0) === "#") {
 			return (
 				<div className="flex flex-row group">
-					<Link target="_self" rel="noopener noreferrer" passHref {...props} />
+					<Link
+						target="_self"
+						rel="noopener noreferrer"
+						passHref
+						{...props}
+					/>
 					&nbsp;
-					<div className="hidden font-bold text-isGrayDark2 group-hover:block">#</div>
+					<div className="hidden font-bold text-isGrayDark2 group-hover:block">
+						#
+					</div>
 				</div>
 			);
 		} else {
@@ -87,7 +96,10 @@ const MDXComponents = {
 				border-isGrayLightEmphasis4 bg-isGrayLightEmphasis6 py-[4px] px-[6px] leading-tight
                  tracking-wide  md:border-l-[6px] lg:border-l-[8px] md:px-[10px] md:py-[8px]"
 			>
-				<div className="mt-[6px] md:mt-[8px] lg:mt-[12px] ml-[6px] mr-[6px] text-isGhost" {...props} />
+				<div
+					className="mt-[6px] md:mt-[8px] lg:mt-[12px] ml-[6px] mr-[6px] text-isGhost"
+					{...props}
+				/>
 			</blockquote>
 		);
 	},
@@ -97,25 +109,37 @@ const MDXComponents = {
 	ul: (props) => {
 		return (
 			<div className="mb-[8px] md:mb-[12px] lg:mb-[16px] ml-[15px] list-disc leading-tight md:ml-[20px]">
-				<div className="mb-[8px] md:mb-[12px] lg:mb-[16px]" {...props} />
+				<div
+					className="mb-[8px] md:mb-[12px] lg:mb-[16px]"
+					{...props}
+				/>
 			</div>
 		);
 	},
 	ol: (props) => {
 		return (
 			<div className="mb-[8px] md:mb-[12px] lg:mb-[16px] ml-[15px] list-decimal leading-tight md:ml-[20px]">
-				<div className="mb-[8px] md:mb-[12px] lg:mb-[16px]" {...props} />
+				<div
+					className="mb-[8px] md:mb-[12px] lg:mb-[16px]"
+					{...props}
+				/>
 			</div>
 		);
 	},
 	img: (props) => {
-		return <img {...props} alt="image" layout={"fill"} className="rounded-md md:rounded-lg lg:rounded-xl" />;
+		return (
+			<Image
+				{...props}
+				alt="image"
+				className="rounded-md md:rounded-lg lg:rounded-xl"
+			/>
+		);
 	},
 	code: (props) => {
 		return (
 			<span
 				className="inline-block align-middle
-				 rounded-md bg-isGrayLightEmphasis6 font-mono text-isGrayDarkEmphasis4
+				 rounded-md bg-isGrayLightEmphasis5 font-mono text-isGrayDarkEmphasis4
 				 py-[0.5px] px-[4px] md:py-[1px] md:px-[5px] lg:[1.5px] lg:px-[6px] font-medium
 				 text-2xs md:text-xs lg:text-sm"
 				{...props}
@@ -125,11 +149,11 @@ const MDXComponents = {
 	pre: (props) => {
 		return (
 			<pre
-				className="mb-[8px] md:mb-[14px] md:py-[8px] md:px-[14px] px-[12px]
-			 overflow-x-auto rounded-md md:rounded-lg lg:rounded-xl bg-isGrayLightEmphasis6 py-[6px]
+				className="mb-[8px] md:mb-[12px] lg:mb-[16px] md:py-[8px] md:px-[16px]
+			 overflow-x-auto rounded-md md:rounded-lg lg:rounded-xl bg-isGrayLightEmphasis6 py-[6px] px-[12px]
 			 text-2xs md:text-xs lg:text-sm"
 			>
-				<code {...props} />
+				<code className="font-mono" {...props} />
 			</pre>
 		);
 	},
