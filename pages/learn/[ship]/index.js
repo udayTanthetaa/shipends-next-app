@@ -49,6 +49,10 @@ export const getStaticPaths = async () => {
 const Ship = ({ index }) => {
 	const Router = useRouter();
 
+	if (Router.isFallback) {
+		return <>Loading...</>;
+	}
+
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start">
