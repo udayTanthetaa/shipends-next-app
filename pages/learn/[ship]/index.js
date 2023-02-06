@@ -104,8 +104,8 @@ const Ship = ({ index }) => {
 											<BigHead className="z-50 w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg " />
 											<BigHead className="z-40 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
 											<BigHead className="z-30 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
-											<BigHead className="z-20 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
-											<BigHead className="z-10 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
+											{/* <BigHead className="z-20 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
+											<BigHead className="z-10 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" /> */}
 										</div>
 										&nbsp;
 										{Math.floor(Math.random() * 100 + 100)}+ Shippers &nbsp;--&nbsp;
