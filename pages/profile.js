@@ -11,12 +11,11 @@ const Profile = () => {
 	// };
 
 	const sessionContext = useContext(SessionContext);
-	let { session } = sessionContext.state;
+	const { session, setSession } = sessionContext.state;
 
-	const [username, setUsername] = useState("uday");
-	const [email, setEmail] = useState("uday.khokhariya@gmail.com");
-	const newEmail = "updated@gmail.com";
-	const [password, setPassword] = useState("12345678");
+	const [username, setUsername] = useState("shipper");
+	const [email, setEmail] = useState("shipends@gmail.com");
+	const [password, setPassword] = useState("uday");
 
 	// const [currStatus, setCurrStatus] = useState(status["createAccount"]);
 
@@ -60,14 +59,67 @@ const Profile = () => {
 		alert(data.message);
 	};
 
+	const logOut = async () => {
+		localStorage.removeItem("shipper");
+		sessionContext.setSession("");
+
+		alert("User logged out.");
+	};
+
 	const updateEmail = async () => {
+		if (sessionContext.state.session === "") {
+			alert("User not logged in.");
+		}
+
 		const res = await fetch("/api/auth/updateEmail", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				email: newEmail,
+				email: email,
+				token: sessionContext.state,
+			}),
+		});
+
+		const data = await res.json();
+
+		alert(data.message);
+	};
+
+	const updateUsername = async () => {
+		if (sessionContext.state.session === "") {
+			alert("User not logged in.");
+		}
+
+		const res = await fetch("/api/auth/updateUsername", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				username: username,
+				token: sessionContext.state,
+			}),
+		});
+
+		const data = await res.json();
+
+		alert(data.message);
+	};
+
+	const updatePassword = async () => {
+		if (sessionContext.state.session === "") {
+			alert("User not logged in.");
+		}
+
+		const res = await fetch("/api/auth/updatePassword", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				password: password,
 				token: sessionContext.state,
 			}),
 		});
@@ -102,7 +154,20 @@ const Profile = () => {
 			>
 				Log In
 			</button>
+
 			<hr />
+
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					logOut();
+				}}
+			>
+				Log Out
+			</button>
+
+			<hr />
+
 			<button
 				onClick={(e) => {
 					e.preventDefault();
@@ -110,6 +175,28 @@ const Profile = () => {
 				}}
 			>
 				Update Email
+			</button>
+
+			<hr />
+
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					updateUsername();
+				}}
+			>
+				Update Username
+			</button>
+
+			<hr />
+
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					updatePassword();
+				}}
+			>
+				Update Password
 			</button>
 		</>
 	);

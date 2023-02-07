@@ -1,4 +1,5 @@
-import ObjectID from "mongodb";
+// import { ObjectId } from "bson";
+import { ObjectId } from "mongodb";
 import { hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
@@ -127,28 +128,143 @@ export default class UsersDAO {
 				return;
 			}
 
-			const id = jwt.decode(token.session);
-			console.log(id);
+			const user = jwt.decode(token.session);
+			const _id = new ObjectId(user.id);
 
-			// const userDoc = await users.findOne({
-			// 	_id: id,
-			// });
+			const userDoc = await users.findOne({
+				_id: _id,
+			});
 
-			// if (!userDoc) {
-			// 	res.status(404).json({
-			// 		code: 404,
-			// 		message: "User not found.",
-			// 	});
+			if (!userDoc) {
+				res.status(404).json({
+					code: 404,
+					message: "User not found.",
+				});
 
-			// 	return;
-			// }
+				return;
+			}
+
+			const updateDoc = await users.updateOne(
+				{
+					_id: _id,
+				},
+				{
+					$set: { email: email },
+				}
+			);
 
 			res.status(200).json({
 				code: 200,
-				message: "Updated.",
+				message: "Updated",
 			});
 		} catch (err) {
 			console.error(`Unable to put email => ${err}`);
+
+			return {
+				error: err,
+			};
+		}
+	};
+
+	static updateUsername = async (req, res) => {
+		try {
+			const { token, username } = req.body;
+
+			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
+
+			if (!verified) {
+				res.status(401).json({
+					code: 401,
+					message: "Unauthorized.",
+				});
+
+				return;
+			}
+
+			const user = jwt.decode(token.session);
+			const _id = new ObjectId(user.id);
+
+			const userDoc = await users.findOne({
+				_id: _id,
+			});
+
+			if (!userDoc) {
+				res.status(404).json({
+					code: 404,
+					message: "User not found.",
+				});
+
+				return;
+			}
+
+			const updateDoc = await users.updateOne(
+				{
+					_id: _id,
+				},
+				{
+					$set: { username: username },
+				}
+			);
+
+			res.status(200).json({
+				code: 200,
+				message: "Updated",
+			});
+		} catch (err) {
+			console.error(`Unable to put username => ${err}`);
+
+			return {
+				error: err,
+			};
+		}
+	};
+
+	static updatePassword = async (req, res) => {
+		try {
+			const { token, password } = req.body;
+
+			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
+
+			if (!verified) {
+				res.status(401).json({
+					code: 401,
+					message: "Unauthorized.",
+				});
+
+				return;
+			}
+
+			const user = jwt.decode(token.session);
+			const _id = new ObjectId(user.id);
+
+			const userDoc = await users.findOne({
+				_id: _id,
+			});
+
+			if (!userDoc) {
+				res.status(404).json({
+					code: 404,
+					message: "User not found.",
+				});
+
+				return;
+			}
+
+			const updateDoc = await users.updateOne(
+				{
+					_id: _id,
+				},
+				{
+					$set: { password: await hash(password, 12) },
+				}
+			);
+
+			res.status(200).json({
+				code: 200,
+				message: "Updated",
+			});
+		} catch (err) {
+			console.error(`Unable to put password => ${err}`);
 
 			return {
 				error: err,
