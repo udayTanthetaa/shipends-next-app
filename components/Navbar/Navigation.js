@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getActive } from "./Active";
 import { routes } from "./Routes";
+import { motion } from "framer-motion";
 
 const Navigation = () => {
 	const router = useRouter();
@@ -28,10 +29,17 @@ const Navigation = () => {
 					{routes.map((route, index) => {
 						return (
 							<Link href={`${route.path}`} key={index}>
-								<div
+								<motion.button
+									whileHover={{
+										transition: { duration: 0.02 },
+									}}
+									whileTap={{
+										scale: 0.95,
+										transition: { duration: 0.02 },
+									}}
 									id={`${route.id}`}
 									className={`px-[10px] md:px-[13px] lg:px-[16px] rounded-lg text-lg md:text-xl lg:text-2xl
-                                    delay-50 transition duration-300 ease-in-out tracking-tight font-bold 
+                                    delay-50 transition duration-200 ease-in-out tracking-tight font-bold 
                                     ${
 										isActive === route.id
 											? "text-isWhite bg-isGrayDarkEmphasis6 "
@@ -39,7 +47,7 @@ const Navigation = () => {
 									}`}
 								>
 									{route.display}
-								</div>
+								</motion.button>
 							</Link>
 						);
 					})}

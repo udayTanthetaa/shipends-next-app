@@ -23,7 +23,7 @@ const SectionPanel = ({ index }) => {
 						</svg>
 
 						<div className="text-sm font-bold transition duration-300 ease-in-out delay-50 md:text-md lg:text-lg text-isWhite">
-							{Math.floor(Math.random() * 100 + 100)}+ shippers
+							{Math.floor(Math.random() * 100 + 100)}+ Shippers
 						</div>
 
 						<svg

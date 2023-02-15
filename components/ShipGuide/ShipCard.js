@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const ShipCard = ({ ship }) => {
 	const [loading, setLoading] = useState(true);
@@ -62,16 +63,30 @@ const ShipCard = ({ ship }) => {
 					<div className="mt-auto mb-[12px] mr-[12px] flex flex-col items-end">
 						<Link href={`/learn/${ship.path}`} passHref>
 							{ship.status === "active" ? (
-								<button
-									className="delay-50 rounded-md md:rounded-lg lg:rounded-xl  py-[4px]
-                                    px-[10px] text-sm font-semibold text-isGrayDark3 transition duration-300 ease-in-out
+								<motion.button
+									whileHover={{
+										transition: { duration: 0.02 },
+									}}
+									whileTap={{
+										scale: 0.95,
+										transition: { duration: 0.02 },
+									}}
+									className="delay-50 rounded-md md:rounded-lg lg:rounded-xl  py-[4px]    
+								px-[10px] text-sm font-semibold text-isGrayDark3 transition duration-300 ease-in-out
                                     bg-isGrayLightEmphasis5 hover:bg-isGrayLight hover:text-isGrayLightEmphasis6 md:text-md lg:text-lg
                                 	"
 								>
 									Let&apos;s Ship!
-								</button>
+								</motion.button>
 							) : (
-								<button
+								<motion.button
+									whileHover={{
+										transition: { duration: 0.02 },
+									}}
+									whileTap={{
+										scale: 0.95,
+										transition: { duration: 0.02 },
+									}}
 									disabled
 									className="delay-50 cursor-not-allowed rounded-md md:rounded-lg lg:rounded-xl  py-[4px] 
 									px-[10px] text-sm font-semibold text-isGrayDark3 transition duration-300 ease-in-out
@@ -79,7 +94,7 @@ const ShipCard = ({ ship }) => {
                                     "
 								>
 									Coming Soon.
-								</button>
+								</motion.button>
 							)}
 						</Link>
 					</div>

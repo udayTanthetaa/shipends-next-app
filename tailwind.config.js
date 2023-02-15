@@ -2,10 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: [
-		"./pages/**/*.{js,ts,jsx,tsx}",
-		"./components/**/*.{js,ts,jsx,tsx}",
-	],
+	content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
 	variants: {
 		extend: {
 			display: ["group-hover"],
@@ -88,9 +85,16 @@ module.exports = {
 				isWhite: "rgb(255, 255, 255)",
 
 				isGolden: "rgb(255, 170, 0)",
+				isOrange: "rgb(253, 119, 2)",
 				isMagenta: "rgb(255, 0, 238)",
+				isPink: "rgb(255, 0, 102)",
+				isPurple: "rgb(153, 0, 255)",
+				isViolet: "rgb(102, 0, 255)",
+				isBlue: "rgb(19, 0, 255)",
+				isSky: "rgb(0, 136, 255)",
 				isAzure: "rgb(0, 153, 255)",
 				isWater: "rgb(0, 204, 255)",
+				isCyan: "rgb(34, 221, 221)",
 
 				isRedDark: "rgb(255, 59, 48)",
 				isOrangeDark: "rgb(255, 149, 0)",

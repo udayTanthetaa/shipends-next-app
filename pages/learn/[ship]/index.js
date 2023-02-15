@@ -3,7 +3,7 @@ import { Octokit } from "octokit";
 import { Constants } from "../../../components";
 import Link from "next/link";
 import Image from "next/image";
-import { BigHead } from "@bigheads/core";
+import { motion } from "framer-motion";
 
 export const getStaticProps = async (context) => {
 	const octokit = new Octokit({
@@ -54,6 +54,16 @@ const Ship = ({ index }) => {
 		return <>Loading...</>;
 	}
 
+	const getColorSet = (num) => {
+		return (
+			<>
+				<div className="z-50 w-3 h-3 p-0 rounded-full md:h-4 md:w-4 lg:h-5 lg:w-5 drop-shadow-sm bg-isGolden" />
+				<div className="lg:-ml-[6px] md:-ml-[4px] -ml-[2px] z-40 w-3 h-3 p-0 rounded-full md:h-4 md:w-4 lg:h-5 lg:w-5 drop-shadow-sm bg-isMagenta" />
+				<div className="lg:-ml-[6px] md:-ml-[4px] -ml-[2px] z-30 w-3 h-3 p-0 rounded-full md:h-4 md:w-4 lg:h-5 lg:w-5 drop-shadow-sm bg-isCyan" />
+			</>
+		);
+	};
+
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start">
@@ -89,7 +99,14 @@ const Ship = ({ index }) => {
 								passHref
 								className="z-[3] group"
 							>
-								<div
+								<motion.div
+									whileHover={{
+										transition: { duration: 0.02 },
+									}}
+									whileTap={{
+										scale: 0.95,
+										transition: { duration: 0.02 },
+									}}
 									className="w-full rounded-md bg-isWhite transition duration-300 ease-in-out delay-50 group-hover:bg-isBlueDark md:rounded-lg lg:rounded-xl
                                 shadow-sm flex flex-col p-[15px] md:p-[20px] lg:p-[25px] "
 								>
@@ -100,19 +117,15 @@ const Ship = ({ index }) => {
 										className="mt-[4px] text-xs font-medium md:text-sm lg:text-md text-isGrayDark2
                                      group-hover:text-isWhite transition duration-300 ease-in-out delay-50 flex flex-row items-center"
 									>
-										<div className="flex flex-row items-center -mt-[8px] ">
-											<BigHead className="z-50 w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg " />
-											<BigHead className="z-40 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
-											<BigHead className="z-30 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
-											{/* <BigHead className="z-20 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" />
-											<BigHead className="z-10 lg:-ml-[14px] md:-ml-[12px] -ml-[10px] w-4 h-4 p-0 md:h-6 md:w-6 lg:h-8 lg:w-8 drop-shadow-lg" /> */}
+										<div className="flex flex-row items-center">
+											{getColorSet(Math.floor(Math.random() * 2 + 1).toString())}
 										</div>
 										&nbsp;
-										{Math.floor(Math.random() * 100 + 100)}+ Shippers &nbsp;--&nbsp;
+										{Math.floor(Math.random() * 100 + 100)}+ Shippers&nbsp;--&nbsp;
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 24 24"
-											className="w-3 h-3 transition duration-300 ease-in-out md:h-4 md:w-4 lg:h-5 lg:w-5 fill-isRedLight group-hover:fill-isRedDark stroke-none delay-50"
+											className="w-4 h-4 transition duration-300 ease-in-out drop-shadow-sm md:h-5 md:w-5 lg:h-6 lg:w-6 fill-isRedLight group-hover:fill-isRedDark stroke-none delay-50"
 										>
 											<path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
 										</svg>
@@ -122,7 +135,7 @@ const Ship = ({ index }) => {
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 24 24"
-											className="w-3 h-3 transition duration-300 ease-in-out md:h-4 md:w-4 lg:h-5 lg:w-5 fill-isGreenLight group-hover:fill-isGreenDark stroke-none delay-50"
+											className="w-4 h-4 transition duration-300 ease-in-out md:h-5 md:w-5 lg:h-6 lg:w-6 drop-shadow-sm fill-isGreenLight group-hover:fill-isGreenDark stroke-none delay-50"
 										>
 											<path
 												fillRule="evenodd"
@@ -140,7 +153,7 @@ const Ship = ({ index }) => {
 									>
 										{index[section].description}
 									</div>
-								</div>
+								</motion.div>
 							</Link>
 						);
 					})}
