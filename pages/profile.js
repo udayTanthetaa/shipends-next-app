@@ -37,7 +37,7 @@ const Profile = () => {
 
 				{status === "SIGN_IN" ? (
 					<div className="-mt-[2px] mb-[8px] md:mb-[12px] lg:mb-[16px] text-xs font-medium sm:text-sm md:text-md lg:text-lg text-isGrayLightEmphasis">
-						Don't have an account?{" "}
+						Don&apos;t have an account?{" "}
 						<button
 							onClick={() => {
 								setStatus("SIGN_UP");
