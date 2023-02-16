@@ -2,6 +2,7 @@
 import { ObjectId } from "mongodb";
 import { hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import validator from "validator";
 
 let users;
 
@@ -22,20 +23,51 @@ export default class UsersDAO {
 		try {
 			const { username, email, password } = req.body;
 
+			if (!validator.isEmail(email)) {
+				res.status(400).json({
+					code: 400,
+					message: "Bad Request",
+				});
+
+				return;
+			}
+
+			if (!validator.isAlphanumeric(username)) {
+				res.status(400).json({
+					code: 400,
+					message: "Bad Request",
+				});
+
+				return;
+			}
+
 			const userDoc = {
 				email: email,
 				username: username,
 				password: await hash(password, 12),
 			};
 
-			const checkExisitingUser = await users.findOne({
-				$or: [{ username: username }, { email: email }],
+			const checkExisitingUsername = await users.findOne({
+				username: username,
 			});
 
-			if (checkExisitingUser) {
+			if (checkExisitingUsername) {
 				res.status(409).json({
 					code: 409,
-					message: "User already exists.",
+					message: "Username Unavailable",
+				});
+
+				return;
+			}
+
+			const checkExisitingEmail = await users.findOne({
+				email: email,
+			});
+
+			if (checkExisitingEmail) {
+				res.status(409).json({
+					code: 409,
+					message: "Email Already Exists",
 				});
 
 				return;
@@ -44,14 +76,14 @@ export default class UsersDAO {
 			const receipt = await users.insertOne(userDoc);
 
 			receipt.insertedId
-				? res.status(201).json({
-						code: 201,
+				? res.status(200).json({
+						code: 200,
 						message: "Account created.",
 						id: receipt.insertedId,
 				  })
 				: res.status(500).json({
 						code: 500,
-						message: "Something went wrong.",
+						message: "Something Went Wrong",
 				  });
 		} catch (err) {
 			console.error(`Unable to post user => ${err}`);
@@ -66,6 +98,15 @@ export default class UsersDAO {
 		try {
 			const { username, password } = req.body;
 
+			if (!validator.isAlphanumeric(username)) {
+				res.status(400).json({
+					code: 400,
+					message: "Bad Request",
+				});
+
+				return;
+			}
+
 			const userDoc = await users.findOne({
 				username: username,
 			});
@@ -73,7 +114,7 @@ export default class UsersDAO {
 			if (!userDoc) {
 				res.status(404).json({
 					code: 404,
-					message: "User not found.",
+					message: "User Not Found",
 				});
 
 				return;
@@ -84,7 +125,7 @@ export default class UsersDAO {
 			if (!checkPassword) {
 				res.status(401).json({
 					code: 401,
-					message: "Incorrect password.",
+					message: "Incorrect Password",
 				});
 			} else {
 				const token = jwt.sign(
@@ -100,7 +141,7 @@ export default class UsersDAO {
 
 				res.status(200).json({
 					code: 200,
-					message: "Login success.",
+					message: "Login Success",
 					token: token,
 				});
 			}
@@ -116,6 +157,15 @@ export default class UsersDAO {
 	static updateEmail = async (req, res) => {
 		try {
 			const { token, email } = req.body;
+
+			if (!validator.isEmail(email)) {
+				res.status(400).json({
+					code: 400,
+					message: "Bad Request",
+				});
+
+				return;
+			}
 
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
@@ -170,12 +220,21 @@ export default class UsersDAO {
 		try {
 			const { token, username } = req.body;
 
+			if (!validator.isAlphanumeric(username)) {
+				res.status(400).json({
+					code: 400,
+					message: "Bad Request",
+				});
+
+				return;
+			}
+
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
 				res.status(401).json({
 					code: 401,
-					message: "Unauthorized.",
+					message: "Unauthorized",
 				});
 
 				return;
@@ -191,7 +250,7 @@ export default class UsersDAO {
 			if (!userDoc) {
 				res.status(404).json({
 					code: 404,
-					message: "User not found.",
+					message: "User Not Found",
 				});
 
 				return;
@@ -228,7 +287,7 @@ export default class UsersDAO {
 			if (!verified) {
 				res.status(401).json({
 					code: 401,
-					message: "Unauthorized.",
+					message: "Unauthorized",
 				});
 
 				return;
@@ -244,7 +303,7 @@ export default class UsersDAO {
 			if (!userDoc) {
 				res.status(404).json({
 					code: 404,
-					message: "User not found.",
+					message: "User Not Found",
 				});
 
 				return;
@@ -265,6 +324,43 @@ export default class UsersDAO {
 			});
 		} catch (err) {
 			console.error(`Unable to put password => ${err}`);
+
+			return {
+				error: err,
+			};
+		}
+	};
+
+	static isUser = async (req, res) => {
+		try {
+			const { username } = req.body;
+
+			if (!validator.isAlphanumeric(username)) {
+				res.status(400).json({
+					code: 400,
+					message: "Bad Request",
+				});
+
+				return;
+			}
+
+			const userDoc = await users.findOne({
+				username: username,
+			});
+
+			if (userDoc) {
+				res.status(200).json({
+					code: 200,
+					message: "FOUND",
+				});
+			} else {
+				res.status(404).json({
+					code: 404,
+					message: "NOT_FOUND",
+				});
+			}
+		} catch (err) {
+			console.error(`Unable to validate user => ${err}`);
 
 			return {
 				error: err,
