@@ -17,7 +17,7 @@ const Navigation = () => {
 	return (
 		<>
 			<div
-				className="z-50 flex flex-col w-full place-content-center items-center sticky top-0
+				className="z-50 flex flex-col w-full place-content-center items-center fixed top-0
 				text-center py-[8px] px-[12px]
             "
 			>

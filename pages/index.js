@@ -8,17 +8,11 @@ const Home = () => {
 		<>
 			<Head>
 				<title>Shipends</title>
-				<meta
-					name="description"
-					content="Ship cool products, without reading docs."
-				/>
-				<meta
-					name="viewport"
-					content="width=device-width, initial-scale=1"
-				/>
+				<meta name="description" content="Ship cool products, without reading docs." />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<main>
+			<main className="mt-[50px]">
 				<Cta />
 			</main>
 		</>

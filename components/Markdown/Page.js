@@ -27,10 +27,10 @@ const Page = ({ frontmatter, source, index }) => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start">
-				<div className="w-full h-full lg:max-w-[1200px] flex flex-col p-[12px] ">
+			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start ">
+				<div className="w-full h-full lg:max-w-[1200px] flex flex-col p-[12px] mt-[62px] md:mt-[64px] lg:mt-[70px]">
 					<SectionPanel index={index} />
-					<Content frontmatter={frontmatter} source={source} />
+					<Content className="shadow-sm" frontmatter={frontmatter} source={source} />
 				</div>
 			</div>
 

@@ -1,203 +1,150 @@
-import * as jwt from "jsonwebtoken";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
-import SessionContext from "../session/sessionContext";
+import { useState } from "react";
 
 const Profile = () => {
-	// const status = {
-	// 	createAccount: {},
-	// 	resetPassword: {},
-	// 	user: {},
-	// };
+	const [user, setUser] = useState({
+		username: "",
+		password: "",
+		email: "",
+	});
 
-	const sessionContext = useContext(SessionContext);
-	const { session, setSession } = sessionContext.state;
-
-	const [username, setUsername] = useState("shipper");
-	const [email, setEmail] = useState("shipends@gmail.com");
-	const [password, setPassword] = useState("uday");
-
-	// const [currStatus, setCurrStatus] = useState(status["createAccount"]);
-
-	const signUp = async () => {
-		const res = await fetch("/api/auth/signUp", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				username: username,
-				email: email,
-				password: password,
-			}),
-		});
-
-		const data = await res.json();
-
-		alert(data.message);
+	const getStatus = {
+		SIGN_IN: {
+			button: "Sign In",
+		},
+		SIGN_UP: {
+			button: "Sign Up",
+		},
+		RESET_PASSWORD: {
+			button: "Reset Password",
+		},
 	};
 
-	const logIn = async () => {
-		const res = await fetch("/api/auth/logIn", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				username: username,
-				password: password,
-			}),
-		});
+	const [status, setStatus] = useState("SIGN_IN");
 
-		const data = await res.json();
-
-		if (data.token) {
-			sessionContext.setSession(data.token);
-			localStorage.setItem("shipper", data.token);
-		}
-
-		alert(data.message);
-	};
-
-	const logOut = async () => {
-		localStorage.removeItem("shipper");
-		sessionContext.setSession("");
-
-		alert("User logged out.");
-	};
-
-	const updateEmail = async () => {
-		if (sessionContext.state.session === "") {
-			alert("User not logged in.");
-		}
-
-		const res = await fetch("/api/auth/updateEmail", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				email: email,
-				token: sessionContext.state,
-			}),
-		});
-
-		const data = await res.json();
-
-		alert(data.message);
-	};
-
-	const updateUsername = async () => {
-		if (sessionContext.state.session === "") {
-			alert("User not logged in.");
-		}
-
-		const res = await fetch("/api/auth/updateUsername", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				username: username,
-				token: sessionContext.state,
-			}),
-		});
-
-		const data = await res.json();
-
-		alert(data.message);
-	};
-
-	const updatePassword = async () => {
-		if (sessionContext.state.session === "") {
-			alert("User not logged in.");
-		}
-
-		const res = await fetch("/api/auth/updatePassword", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				password: password,
-				token: sessionContext.state,
-			}),
-		});
-
-		const data = await res.json();
-
-		alert(data.message);
+	const editUser = (e, property) => {
+		let newUser = { ...user };
+		newUser[property] = e.target.value;
+		setUser(newUser);
 	};
 
 	return (
 		<>
-			<h1>Profile</h1>
+			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-center p-[12px]">
+				{/* <img className="drop-shadow-sm" src="/favicon.ico" alt="Shipends Logo" /> */}
+				<div className="mt-[6px] text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl text-isGrayDarkEmphasis6">
+					Welcome to Shipends!
+				</div>
 
-			<hr />
+				{status === "SIGN_IN" ? (
+					<div className="-mt-[2px] mb-[8px] md:mb-[12px] lg:mb-[16px] text-xs font-medium sm:text-sm md:text-md lg:text-lg text-isGrayLightEmphasis">
+						Don't have an account?{" "}
+						<button
+							onClick={() => {
+								setStatus("SIGN_UP");
+							}}
+							className="text-isBlueDark"
+						>
+							Sign up here.
+						</button>
+					</div>
+				) : (
+					<></>
+				)}
 
-			<button
-				onClick={(e) => {
-					e.preventDefault();
-					signUp();
-				}}
-			>
-				Sign Up
-			</button>
+				{status === "SIGN_UP" ? (
+					<div className="-mt-[2px] mb-[8px] md:mb-[12px] lg:mb-[16px] text-xs font-medium sm:text-sm md:text-md lg:text-lg text-isGrayLightEmphasis">
+						Have an account already?{" "}
+						<button
+							onClick={() => {
+								setStatus("SIGN_IN");
+							}}
+							className="text-isBlueDark"
+						>
+							Sign in here.
+						</button>
+					</div>
+				) : (
+					<></>
+				)}
 
-			<hr />
+				{status === "SIGN_UP" ? (
+					<input
+						onChange={(e) => {
+							editUser(e, "email");
+						}}
+						value={user.email}
+						className="mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
+                    rounded-lg py-[8px] px-[16px] outline-none 
+                    text-sm sm:text-md md:text-lg lg:text-xl
+                    text-isGrayDarkEmphasis3 font-medium shadow-sm bg-isGrayWhite"
+						type="text"
+						placeholder="Email"
+					/>
+				) : (
+					<></>
+				)}
 
-			<button
-				onClick={(e) => {
-					e.preventDefault();
-					logIn();
-				}}
-			>
-				Log In
-			</button>
+				{status === "SIGN_UP" || "SIGN_IN" ? (
+					<input
+						onChange={(e) => {
+							editUser(e, "username");
+						}}
+						value={user.username}
+						className="mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
+                    rounded-lg py-[8px] px-[16px] outline-none 
+                    text-sm sm:text-md md:text-lg lg:text-xl
+                    text-isGrayDarkEmphasis3 font-medium shadow-sm bg-isGrayWhite"
+						type="text"
+						placeholder="Username"
+					/>
+				) : (
+					<></>
+				)}
 
-			<hr />
+				{status === "SIGN_UP" || "SIGN_IN" ? (
+					<input
+						onChange={(e) => {
+							editUser(e, "password");
+						}}
+						value={user.password}
+						className="mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
+                    rounded-lg py-[8px] px-[16px] outline-none 
+                    text-sm sm:text-md md:text-lg lg:text-xl
+                    text-isGrayDarkEmphasis3 font-medium shadow-sm bg-isGrayWhite"
+						type="text"
+						placeholder="Password"
+					/>
+				) : (
+					<></>
+				)}
 
-			<button
-				onClick={(e) => {
-					e.preventDefault();
-					logOut();
-				}}
-			>
-				Log Out
-			</button>
+				{status === "SIGN_IN" ? (
+					<div className="items-end mt-[6px] mb-[12px] text-xs font-medium sm:text-xs md:text-sm lg:text-md text-isGrayLightEmphasis">
+						Forgot Password?{" "}
+						<button
+							onClick={() => {
+								setStatus("RESET_PASSWORD");
+							}}
+							className="text-isBlueDark"
+						>
+							Reset here.
+						</button>
+					</div>
+				) : (
+					<></>
+				)}
 
-			<hr />
-
-			<button
-				onClick={(e) => {
-					e.preventDefault();
-					updateEmail();
-				}}
-			>
-				Update Email
-			</button>
-
-			<hr />
-
-			<button
-				onClick={(e) => {
-					e.preventDefault();
-					updateUsername();
-				}}
-			>
-				Update Username
-			</button>
-
-			<hr />
-
-			<button
-				onClick={(e) => {
-					e.preventDefault();
-					updatePassword();
-				}}
-			>
-				Update Password
-			</button>
+				<button
+					className="mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
+                    rounded-lg py-[8px] px-[16px] outline-none 
+                    text-sm sm:text-md md:text-lg lg:text-xl
+                    text-isWhite font-extrabold shadow-sm bg-isBlueDark "
+					type="text"
+					placeholder="Password"
+				>
+					{getStatus[status].button}
+				</button>
+			</div>
 		</>
 	);
 };

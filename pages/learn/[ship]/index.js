@@ -67,7 +67,7 @@ const Ship = ({ index }) => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start">
-				<div className="w-full h-full lg:max-w-[1200px] flex flex-col p-[12px] space-y-[12px] ">
+				<div className="w-full h-full lg:max-w-[1200px] flex flex-col p-[12px] space-y-[12px] mt-[64px] sm:mt-[64px] md:mt-[68px] lg:mt-[74px]">
 					<div className="w-full -mt-[16px] relative">
 						<img
 							src={index.banner}
