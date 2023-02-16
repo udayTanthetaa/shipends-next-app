@@ -26,7 +26,7 @@ export default class UsersDAO {
 			if (!validator.isEmail(email)) {
 				res.status(400).json({
 					code: 400,
-					message: "Bad Request",
+					message: "Invalid Email",
 				});
 
 				return;
@@ -35,7 +35,16 @@ export default class UsersDAO {
 			if (!validator.isAlphanumeric(username)) {
 				res.status(400).json({
 					code: 400,
-					message: "Bad Request",
+					message: "Invalid Username",
+				});
+
+				return;
+			}
+
+			if (password === "") {
+				res.status(400).json({
+					code: 400,
+					message: "Invalid Password",
 				});
 
 				return;
@@ -101,7 +110,7 @@ export default class UsersDAO {
 			if (!validator.isAlphanumeric(username)) {
 				res.status(400).json({
 					code: 400,
-					message: "Bad Request",
+					message: "Invalid Username",
 				});
 
 				return;
@@ -161,7 +170,7 @@ export default class UsersDAO {
 			if (!validator.isEmail(email)) {
 				res.status(400).json({
 					code: 400,
-					message: "Bad Request",
+					message: "Invalid Email",
 				});
 
 				return;
@@ -223,7 +232,7 @@ export default class UsersDAO {
 			if (!validator.isAlphanumeric(username)) {
 				res.status(400).json({
 					code: 400,
-					message: "Bad Request",
+					message: "Invalid Username",
 				});
 
 				return;
@@ -338,7 +347,7 @@ export default class UsersDAO {
 			if (!validator.isAlphanumeric(username)) {
 				res.status(400).json({
 					code: 400,
-					message: "Bad Request",
+					message: "Invalid Username",
 				});
 
 				return;
