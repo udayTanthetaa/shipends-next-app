@@ -1,5 +1,6 @@
 import clientPromise from "../../../mongodb";
 import UsersDAO from "../../../mongodb/dao/usersDAO";
+import { sendResponse } from "../../../responseCodes";
 
 const handler = async (req, res) => {
 	if (req.method === "POST") {
@@ -9,16 +10,10 @@ const handler = async (req, res) => {
 			await UsersDAO.injectDB(client);
 			await UsersDAO.updatePassword(req, res);
 		} catch (err) {
-			res.status(500).json({
-				code: 500,
-				message: err.message,
-			});
+			sendResponse(res, "BAD_REQUEST");
 		}
 	} else {
-		res.status(500).json({
-			code: 421,
-			message: "Invalid Route.",
-		});
+		sendResponse(res, "INVALID_ROUTE");
 	}
 };
 

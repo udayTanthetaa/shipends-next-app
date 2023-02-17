@@ -3,6 +3,21 @@ import validator from "validator";
 import { motion } from "framer-motion";
 
 const Profile = () => {
+	const getStatus = {
+		SIGN_IN: {
+			button: "Sign In",
+		},
+		SIGN_UP: {
+			button: "Sign Up",
+		},
+		RESET_PASSWORD: {
+			button: "Reset Password",
+		},
+		SUCCESS: {
+			button: "Success",
+		},
+	};
+
 	const [user, setUser] = useState({
 		username: "",
 		password: "",
@@ -22,19 +37,11 @@ const Profile = () => {
 	});
 
 	const [action, setAction] = useState("NONE");
-	const [message, setMessage] = useState("");
 
-	const getStatus = {
-		SIGN_IN: {
-			button: "Sign In",
-		},
-		SIGN_UP: {
-			button: "Sign Up",
-		},
-		RESET_PASSWORD: {
-			button: "Reset Password",
-		},
-	};
+	const [reqStatus, setReqStatus] = useState({
+		code: "",
+		message: "",
+	});
 
 	const [status, setStatus] = useState("SIGN_IN");
 
@@ -67,39 +74,6 @@ const Profile = () => {
 				newUser[property] = user[property];
 			}
 		}
-
-		// if (property === "username") {
-		// 	let newIsInitial = { ...isInitial };
-
-		// 	if (isInitial[property]) {
-		// 		newIsInitial[property] = false;
-		// 		setIsInitial(newIsInitial);
-		// 	}
-
-		// 	let newIsValid = { ...isValid };
-
-		// 	const res = await fetch("/api/auth/isUser", {
-		// 		method: "POST",
-		// 		headers: {
-		// 			"Content-Type": "application/json",
-		// 		},
-		// 		body: JSON.stringify({
-		// 			username: newUser[property],
-		// 		}),
-		// 	});
-
-		// 	const data = await res.json();
-
-		// 	console.log(data.message);
-
-		// 	if (data.message === "FOUND") {
-		// 		newIsValid[property] = true;
-		// 	} else {
-		// 		newIsValid[property] = false;
-		// 	}
-
-		// 	setIsValid(newIsValid);
-		// }
 
 		setUser(newUser);
 	};
@@ -154,7 +128,10 @@ const Profile = () => {
 							email: true,
 						});
 
-						setMessage("");
+						setReqStatus({
+							code: "",
+							message: "",
+						});
 						setAction("NONE");
 					}}
 					className="text-isBlueDark"
@@ -207,7 +184,7 @@ const Profile = () => {
 		}
 
 		if (status === "SIGN_IN") {
-			const res = await fetch("/api/auth/logIn", {
+			const res = await fetch("/api/auth/signIn", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -243,8 +220,13 @@ const Profile = () => {
 
 			const data = await res.json();
 
-			if (data.code !== "200") {
-				setMessage(data.message);
+			setReqStatus({
+				code: data.code,
+				message: data.message,
+			});
+
+			if (data.code === 201) {
+				setStatus("SUCCESS");
 			}
 		}
 
@@ -254,7 +236,7 @@ const Profile = () => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-center p-[12px]">
-				{/* <img className="drop-shadow-sm" src="/favicon.ico" alt="Shipends Logo" /> */}
+				<img className="drop-shadow-sm" src="/favicon.ico" alt="Shipends Logo" />
 
 				<div className="mt-[6px] text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl text-isGrayDarkEmphasis6">
 					Welcome to Shipends!
@@ -279,38 +261,51 @@ const Profile = () => {
 
 				{emptyDiv()}
 
-				<motion.button
-					whileHover={{
-						transition: { duration: 0.02 },
-					}}
-					whileTap={{
-						scale: 0.95,
-						transition: { duration: 0.02 },
-					}}
-					onClick={() => {
-						setAction("LOADING");
-						setMessage("");
-						sendAuthRequest();
-					}}
-					className={`mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
+				{status === "SUCCESS" ? (
+					<></>
+				) : (
+					<motion.button
+						whileHover={{
+							transition: { duration: 0.02 },
+						}}
+						whileTap={{
+							scale: 0.95,
+							transition: { duration: 0.02 },
+						}}
+						onClick={() => {
+							setAction("LOADING");
+							setReqStatus({
+								code: "",
+								message: "",
+							});
+							sendAuthRequest();
+						}}
+						className={`mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
                     rounded-lg py-[8px] px-[16px] outline-none 
                     text-sm sm:text-md md:text-lg lg:text-xl
                     text-isWhite font-extrabold shadow-sm bg-isBlueDark items-center flex flex-col cursor-pointer
                     ${isValidRequest() ? "" : "disabled"}
                     `}
-				>
-					{action === "NONE" ? getStatus[status].button : getLoader()}
-				</motion.button>
+					>
+						{action === "NONE" ? getStatus[status].button : getLoader()}
+					</motion.button>
+				)}
 
 				<div
-					className={`mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
+					className={`mt-[12px] w-full
                     rounded-lg py-[8px] px-[16px] outline-none 
-                    text-sm sm:text-md md:text-lg lg:text-xl
-                    text-isWhite font-extrabold shadow-sm bg-isRedDark items-center flex flex-col 
-                    ${message === "" ? "hidden" : "block"}
+                    text-sm sm:text-md md:text-lg lg:text-xl text-center
+                    text-isWhite font-extrabold shadow-sm  items-center flex flex-col 
+                    ${reqStatus.message === "" ? "hidden" : "block"}
+					${
+						reqStatus.code === 201
+							? "bg-isGreenDark max-w-xl"
+							: "bg-isRedDark max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px]"
+					}
+					
                     `}
 				>
-					{message}
+					{reqStatus.message}
 				</div>
 			</div>
 		</>

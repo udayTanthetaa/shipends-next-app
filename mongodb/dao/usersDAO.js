@@ -3,6 +3,8 @@ import { ObjectId } from "mongodb";
 import { hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import validator from "validator";
+import nodemailer from "nodemailer";
+import { getResponse, sendResponse } from "../../responseCodes";
 
 let users;
 
@@ -19,147 +21,186 @@ export default class UsersDAO {
 		}
 	};
 
-	static addUser = async (req, res) => {
+	static isEmailValid = (res, email) => {
+		let status = true;
+
+		if (!validator.isEmail(email)) status = false;
+		if (email.length > 350) status = false;
+		if (status === false) sendResponse(res, "INVALID_EMAIL");
+
+		return status;
+	};
+
+	static isUsernameValid = (res, username) => {
+		let status = true;
+
+		if (!validator.isAlphanumeric(username)) status = false;
+		if (username.length > 30) status = false;
+		if (status === false) sendResponse(res, "INVALID_USERNAME");
+
+		return status;
+	};
+
+	static isPasswordValid = (res, password) => {
+		let status = true;
+
+		if (password === "") status = false;
+		if (password.length > 101) status = false;
+		if (status === false) sendResponse(res, "INVALID_PASSWORD");
+
+		return status;
+	};
+
+	static isUsernameUnique = async (res, username) => {
+		const exists = await users.findOne({
+			username: username,
+		});
+
+		if (exists) {
+			sendResponse(res, "USERNAME_CONFLICT");
+			return false;
+		}
+
+		return true;
+	};
+
+	static isEmailUnique = async (res, email) => {
+		const exists = await users.findOne({
+			email: email,
+		});
+
+		if (exists) {
+			sendResponse(res, "EMAIL_CONFLICT");
+			return false;
+		}
+
+		return true;
+	};
+
+	static signUp = async (req, res) => {
 		try {
-			const { username, email, password } = req.body;
+			const { email, username, password } = req.body;
 
-			if (!validator.isEmail(email)) {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Email",
-				});
+			if (!this.isEmailValid(res, email)) return;
+			if (!this.isUsernameValid(res, username)) return;
+			if (!this.isPasswordValid(res, password)) return;
+			if (!(await this.isUsernameUnique(res, username))) return;
+			if (!(await this.isEmailUnique(res, email))) return;
 
-				return;
-			}
+			const token = jwt.sign(
+				{
+					email: email,
+					username: username,
+					password: await hash(password, 12),
+				},
+				process.env.NEXT_PUBLIC_JWT_SECRET,
+				{
+					allowInsecureKeySizes: true,
+					expiresIn: 10 * 60, // 10 minutes
+				}
+			);
 
-			if (!validator.isAlphanumeric(username)) {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Username",
-				});
+			const verificationUrl = `${req.headers.origin}/verify?token=${token}`;
 
-				return;
-			}
-
-			if (password === "") {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Password",
-				});
-
-				return;
-			}
-
-			const checkExisitingUsername = await users.findOne({
-				username: username,
+			const transporter = nodemailer.createTransport({
+				service: "gmail",
+				auth: {
+					user: process.env.NEXT_PUBLIC_GMAIL_USER,
+					pass: process.env.NEXT_PUBLIC_GMAIL_PASS,
+				},
 			});
 
-			if (checkExisitingUsername) {
-				res.status(409).json({
-					code: 409,
-					message: "Username Unavailable",
-				});
-
-				return;
-			}
-
-			const checkExisitingEmail = await users.findOne({
-				email: email,
-			});
-
-			if (checkExisitingEmail) {
-				res.status(409).json({
-					code: 409,
-					message: "Email Already Exists",
-				});
-
-				return;
-			}
-
-			const userDoc = {
-				email: email,
-				username: username,
-				password: await hash(password, 12),
+			const config = {
+				from: process.env.NEXT_PUBLIC_GMAIL_USER,
+				to: email,
+				subject: "Test Email",
+				text: `Click here to verify -- ${verificationUrl}`,
 			};
 
-			const receipt = await users.insertOne(userDoc);
-
-			receipt.insertedId
-				? res.status(200).json({
-						code: 200,
-						message: "Account Created",
-						id: receipt.insertedId,
-				  })
-				: res.status(500).json({
-						code: 500,
-						message: "Something Went Wrong",
-				  });
+			try {
+				await transporter.sendMail(config);
+				sendResponse(res, "EMAIL_SENT");
+			} catch (err) {
+				sendResponse(res, "EMAIL_FAILED");
+			}
 		} catch (err) {
-			console.error(`Unable to post user => ${err}`);
-
-			return {
-				error: err,
-			};
+			sendResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
-	static verifyUser = async (req, res) => {
+	static verifyEmail = async (req, res) => {
 		try {
-			const { username, password } = req.body;
+			const { token } = req.body;
 
-			if (!validator.isAlphanumeric(username)) {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Username",
-				});
-
+			if (!token) {
+				sendResponse(res, "AUTH_TOKEN_MISSING");
 				return;
 			}
 
-			const userDoc = await users.findOne({
+			try {
+				const verified = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
+
+				if (!verified) {
+					sendResponse(res, "UNAUTHORIZED");
+					return;
+				}
+
+				const user = jwt.decode(token);
+
+				const userDoc = {
+					email: user.email,
+					username: user.username,
+					password: user.password,
+				};
+
+				const receipt = await users.insertOne(userDoc);
+
+				receipt.insertedId ? sendResponse(res, "SIGN_UP_SUCCESS") : sendResponse(res, "SOMETHING_WENT_WRONG");
+			} catch (err) {
+				sendResponse(res, "INVALID_AUTH_TOKEN");
+			}
+		} catch (err) {
+			sendResponse(res, "INTERNAL_SERVER_ERROR");
+		}
+	};
+
+	static signIn = async (req, res) => {
+		try {
+			const { username, password } = req.body;
+
+			if (!this.isUsernameValid(res, username)) return;
+			if (!this.isPasswordValid(res, password)) return;
+
+			const userExists = await users.findOne({
 				username: username,
 			});
 
-			if (!userDoc) {
-				res.status(404).json({
-					code: 404,
-					message: "User Not Found",
-				});
-
+			if (!userExists) {
+				sendResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
 			const checkPassword = await compare(password, userDoc.password);
 
 			if (!checkPassword) {
-				res.status(401).json({
-					code: 401,
-					message: "Incorrect Password",
-				});
-			} else {
-				const token = jwt.sign(
-					{
-						id: userDoc._id,
-					},
-					process.env.NEXT_PUBLIC_JWT_SECRET,
-					{
-						allowInsecureKeySizes: true,
-						expiresIn: 365 * 24 * 60 * 60,
-					}
-				);
-
-				res.status(200).json({
-					code: 200,
-					message: "Login Success",
-					token: token,
-				});
+				sendResponse(res, "WRONG_PASSWORD");
+				return;
 			}
-		} catch (err) {
-			console.error(`Unable to put user => ${err}`);
 
-			return {
-				error: err,
-			};
+			const token = jwt.sign(
+				{
+					id: userDoc._id,
+				},
+				process.env.NEXT_PUBLIC_JWT_SECRET,
+				{
+					allowInsecureKeySizes: true,
+					expiresIn: 365 * 24 * 60 * 60,
+				}
+			);
+
+			res.status(201).json({ ...getResponse("SIGN_IN_SUCCESS"), token: token });
+		} catch (err) {
+			sendResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -168,22 +209,14 @@ export default class UsersDAO {
 			const { token, email } = req.body;
 
 			if (!validator.isEmail(email)) {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Email",
-				});
-
+				sendResponse(res, "INVALID_EMAIL");
 				return;
 			}
 
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
-				res.status(401).json({
-					code: 401,
-					message: "Unauthorized.",
-				});
-
+				sendResponse(res, "UNAUTHORIZED");
 				return;
 			}
 
@@ -195,11 +228,7 @@ export default class UsersDAO {
 			});
 
 			if (!userDoc) {
-				res.status(404).json({
-					code: 404,
-					message: "User not found.",
-				});
-
+				sendResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
@@ -212,16 +241,9 @@ export default class UsersDAO {
 				}
 			);
 
-			res.status(200).json({
-				code: 200,
-				message: "Updated",
-			});
+			sendResponse(res, "UPDATED");
 		} catch (err) {
-			console.error(`Unable to put email => ${err}`);
-
-			return {
-				error: err,
-			};
+			sendResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -230,22 +252,14 @@ export default class UsersDAO {
 			const { token, username } = req.body;
 
 			if (!validator.isAlphanumeric(username)) {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Username",
-				});
-
+				sendResponse(res, "INVALID_USERNAME");
 				return;
 			}
 
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
-				res.status(401).json({
-					code: 401,
-					message: "Unauthorized",
-				});
-
+				sendResponse(res, "UNAUTHORIZED");
 				return;
 			}
 
@@ -257,11 +271,7 @@ export default class UsersDAO {
 			});
 
 			if (!userDoc) {
-				res.status(404).json({
-					code: 404,
-					message: "User Not Found",
-				});
-
+				sendResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
@@ -274,16 +284,9 @@ export default class UsersDAO {
 				}
 			);
 
-			res.status(200).json({
-				code: 200,
-				message: "Updated",
-			});
+			sendResponse(res, "UPDATED");
 		} catch (err) {
-			console.error(`Unable to put username => ${err}`);
-
-			return {
-				error: err,
-			};
+			sendResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -294,11 +297,7 @@ export default class UsersDAO {
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
-				res.status(401).json({
-					code: 401,
-					message: "Unauthorized",
-				});
-
+				sendResponse(res, "UNAUTHORIZED");
 				return;
 			}
 
@@ -310,11 +309,7 @@ export default class UsersDAO {
 			});
 
 			if (!userDoc) {
-				res.status(404).json({
-					code: 404,
-					message: "User Not Found",
-				});
-
+				sendResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
@@ -327,53 +322,9 @@ export default class UsersDAO {
 				}
 			);
 
-			res.status(200).json({
-				code: 200,
-				message: "Updated",
-			});
+			sendResponse(res, "UPDATED");
 		} catch (err) {
-			console.error(`Unable to put password => ${err}`);
-
-			return {
-				error: err,
-			};
-		}
-	};
-
-	static isUser = async (req, res) => {
-		try {
-			const { username } = req.body;
-
-			if (!validator.isAlphanumeric(username)) {
-				res.status(400).json({
-					code: 400,
-					message: "Invalid Username",
-				});
-
-				return;
-			}
-
-			const userDoc = await users.findOne({
-				username: username,
-			});
-
-			if (userDoc) {
-				res.status(200).json({
-					code: 200,
-					message: "FOUND",
-				});
-			} else {
-				res.status(404).json({
-					code: 404,
-					message: "NOT_FOUND",
-				});
-			}
-		} catch (err) {
-			console.error(`Unable to validate user => ${err}`);
-
-			return {
-				error: err,
-			};
+			sendResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 }
