@@ -1,4 +1,4 @@
-import clientPromise from "../../../mongodb";
+import clientPromise from "../../../mongodb/index.js";
 import UsersDAO from "../../../mongodb/dao/usersDAO";
 
 const handler = async (req, res) => {

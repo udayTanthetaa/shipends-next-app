@@ -1,8 +1,8 @@
-// import { ObjectId } from "bson";
 import { ObjectId } from "mongodb";
-import { hash, compare } from "bcrypt";
+// import { hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import validator from "validator";
+// import { json } from "express";
 
 let users;
 
@@ -15,15 +15,18 @@ export default class UsersDAO {
 		try {
 			users = await conn.db(process.env.NEXT_PUBLIC_MONGODB_NS).collection("users");
 		} catch (err) {
-			console.error(`Unable to establish connection handle in usersDAO => ${err}`);
+			console.error(`Unable to establish connection handle in reviewDAO => ${err}`);
 		}
 	};
 
-	static addUser = async (req, res) => {
+	static addUser = async ({ username, email, password }) => {
 		try {
-			const { username, email, password } = req.body;
-
 			if (!validator.isEmail(email)) {
+				return {
+					code: 400,
+					message: "Invalid Email",
+				};
+
 				res.status(400).json({
 					code: 400,
 					message: "Invalid Email",
