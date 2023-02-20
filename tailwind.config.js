@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+	content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}", "./ui/**/*.{js,ts,jsx,tsx}"],
 	variants: {
 		extend: {
 			display: ["group-hover"],
@@ -11,7 +11,6 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				// Roboto: ["Roboto", ...defaultTheme.fontFamily.sans],
 				RobotoFlex: ["Roboto Flex", ...defaultTheme.fontFamily.sans],
 			},
 			fontSize: {
@@ -80,7 +79,6 @@ module.exports = {
 				loosest: "1.875",
 			},
 			colors: {
-				// == Main Colors ==
 				isBlack: "rgb(0, 0, 0)",
 				isWhite: "rgb(255, 255, 255)",
 
@@ -175,7 +173,6 @@ module.exports = {
 				isGrayDarkEmphasis4: "rgb(58, 58, 60)",
 				isGrayDarkEmphasis5: "rgb(44, 44, 46)",
 				isGrayDarkEmphasis6: "rgb(28, 28, 30)",
-				// == Main Colors ==
 
 				// monokai
 				monokai: "#272822",

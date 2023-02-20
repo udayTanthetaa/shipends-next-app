@@ -4,6 +4,8 @@ import validator from "validator";
 import { motion } from "framer-motion";
 import { Welcome, Subtitle, EmptyDiv } from "../../components/Profile";
 
+import { Header, Button, Input } from "../../ui";
+
 const You = () => {
 	const [user, setUser] = useState({
 		username: {
@@ -24,7 +26,7 @@ const You = () => {
 	});
 
 	const [status, setStatus] = useState({
-		value: "PENDING",
+		value: "LOADING",
 	});
 
 	const [reqStatus, setReqStatus] = useState({
@@ -63,10 +65,8 @@ const You = () => {
 		}
 
 		if (property === "email") {
-			if (newUser[property].value === "") {
+			if (newUser[property].value === "" || !validator.isEmail(newUser[property].value)) {
 				newUser[property].isValid = false;
-			} else if (validator.isEmail(newUser[property].value)) {
-				newUser[property].isValid = true;
 			} else {
 				newUser[property].isValid = false;
 			}
@@ -88,31 +88,6 @@ const You = () => {
 		}
 
 		setUser(newUser);
-	};
-
-	const getInput = ({ property, type, placeholder }) => {
-		return (
-			<input
-				onChange={(e) => {
-					editUser(e, property);
-				}}
-				type={type}
-				value={user[property].value}
-				className={`mt-[6px] md:mt-[9px] lg:mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
-                    rounded-lg py-[8px] px-[16px] outline-none 
-                    text-sm sm:text-md md:text-lg lg:text-xl
-                     font-semibold shadow-sm 
-                    ${
-						user[property].isInitial
-							? "bg-isWhite text-isGrayDarkEmphasis3 placeholder-isGrayLight3"
-							: user[property].isValid
-							? "bg-isGreenDark text-isWhite placeholder-white"
-							: "bg-isRedDark text-isWhite placeholder-white"
-					}
-                    `}
-				placeholder={placeholder}
-			/>
-		);
 	};
 
 	const isValidRequest = () => {
@@ -176,43 +151,72 @@ const You = () => {
 			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-center p-[12px]">
 				<img className="drop-shadow-sm" src="/favicon.ico" alt="Shipends Logo" />
 
-				<Welcome />
-				<Subtitle className="-mt-[" headline="Don't have an account?" cta="Sign up here." path="signUp" />
-				<EmptyDiv />
-				{getInput({
-					property: "username",
-					type: "text",
-					placeholder: "Username",
-				})}
-
-				{getInput({
-					property: "password",
-					type: "password",
-					placeholder: "Password",
-				})}
-
-				<Subtitle headline="Forgot password?" cta="Reset here." path="resetPassword" />
-
-				<motion.button
-					whileHover={{
-						transition: { duration: 0.02 },
+				<Header
+					cta="Welcome to Shipends!"
+					props={{
+						intent: "night",
+						size: "3xl",
+						font: "bold",
+						shadow: "none",
+						animate: "none",
+						w: "full",
 					}}
-					whileTap={{
-						scale: 0.95,
-						transition: { duration: 0.02 },
-					}}
-					onClick={() => {
-						sendAuthRequest();
-					}}
-					className={`mt-[12px] w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] 
-                    rounded-lg py-[8px] px-[16px] outline-none 
-                    text-sm sm:text-md md:text-lg lg:text-xl
-                    text-isWhite font-extrabold shadow-sm bg-isBlueDark items-center flex flex-col cursor-pointer
-                    ${isValidRequest() ? "" : "disabled"}
-                    `}
-				>
-					{status === "LAODING" ? getLoader() : "Sign In"}
-				</motion.button>
+				/>
+
+				<Subtitle className="" headline="Don't have an account?" cta="Sign up here." path="signUp" />
+
+				<div className="flex flex-col items-center mt-[16px] md:mt-[20px] lg:mt-[24px] w-full max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] space-y-[4px] md:space-y-[8px] lg:space-y-[12px]">
+					<Input
+						onChange={(e) => {
+							editUser(e, "username");
+						}}
+						value={user["username"].value}
+						type="text"
+						placeholder="Username"
+						props={{
+							intent: `${
+								user["username"].isInitial ? "white" : user["username"].isValid ? "success" : "error"
+							}`,
+							size: "md",
+							w: "full",
+						}}
+					/>
+
+					<Input
+						onChange={(e) => {
+							editUser(e, "password");
+						}}
+						value={user["password"].value}
+						type="password"
+						placeholder="Password"
+						props={{
+							intent: `${
+								user["password"].isInitial ? "white" : user["password"].isValid ? "success" : "error"
+							}`,
+							size: "md",
+							w: "full",
+						}}
+					/>
+
+					<Subtitle headline="Forgot password?" cta="Reset here." path="resetPassword" />
+
+					<Button
+						onClick={() => {
+							sendAuthRequest();
+						}}
+						cta={status === "LOADING" ? getLoader() : "Sign In"}
+						disabled={isValidRequest() ? false : true}
+						props={{
+							intent: "primary",
+							size: "lg",
+							font: "bold",
+							shadow: "sm",
+							animate: "primary",
+							w: "full",
+							p: "xl",
+						}}
+					/>
+				</div>
 
 				<div
 					className={`mt-[12px] w-full
