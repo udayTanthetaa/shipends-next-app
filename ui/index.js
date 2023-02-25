@@ -1,5 +1,3 @@
-import { Header } from "./Header";
-import { Button } from "./Button";
-import { Input } from "./Input";
+import { Input, Button, Typography, LinkedSubtitle } from "./components";
 
-export { Header, Button, Input };
+export { Input, Button, Typography, LinkedSubtitle };

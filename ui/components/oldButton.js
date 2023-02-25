@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import { cx } from "class-variance-authority";
 import { motion } from "framer-motion";
 
-export const Button = ({ onClick, cta, disabled, props }) => {
+export const oldButton = ({ onClick, cta, disabled, props }) => {
 	const classes = cva("flex flex-col items-center place-content-center", {
 		variants: {
 			intent: {

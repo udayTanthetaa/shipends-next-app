@@ -4,7 +4,9 @@ import { hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import validator from "validator";
 import nodemailer from "nodemailer";
-import { getResponse, sendResponse } from "../../responseCodes";
+// import { getResponse, sendResponse } from "../../responseCodes";
+
+import { sendCustomResponse, sendKeyResponse } from "responses";
 
 let users;
 
@@ -26,7 +28,7 @@ export default class UsersDAO {
 
 		if (!validator.isEmail(email)) status = false;
 		if (email.length > 350) status = false;
-		if (status === false) sendResponse(res, "INVALID_EMAIL");
+		if (status === false) sendKeyResponse(res, "INVALID_EMAIL");
 
 		return status;
 	};
@@ -36,7 +38,7 @@ export default class UsersDAO {
 
 		if (!validator.isAlphanumeric(username)) status = false;
 		if (username.length > 30) status = false;
-		if (status === false) sendResponse(res, "INVALID_USERNAME");
+		if (status === false) sendKeyResponse(res, "INVALID_USERNAME");
 
 		return status;
 	};
@@ -46,7 +48,7 @@ export default class UsersDAO {
 
 		if (password === "") status = false;
 		if (password.length > 101) status = false;
-		if (status === false) sendResponse(res, "INVALID_PASSWORD");
+		if (status === false) sendKeyResponse(res, "INVALID_PASSWORD");
 
 		return status;
 	};
@@ -57,7 +59,7 @@ export default class UsersDAO {
 		});
 
 		if (exists) {
-			sendResponse(res, "USERNAME_CONFLICT");
+			sendKeyResponse(res, "USERNAME_CONFLICT");
 			return false;
 		}
 
@@ -70,7 +72,7 @@ export default class UsersDAO {
 		});
 
 		if (exists) {
-			sendResponse(res, "EMAIL_CONFLICT");
+			sendKeyResponse(res, "EMAIL_CONFLICT");
 			return false;
 		}
 
@@ -119,12 +121,12 @@ export default class UsersDAO {
 
 			try {
 				await transporter.sendMail(config);
-				sendResponse(res, "EMAIL_SENT");
+				sendKeyResponse(res, "EMAIL_SENT");
 			} catch (err) {
-				sendResponse(res, "EMAIL_FAILED");
+				sendKeyResponse(res, "EMAIL_FAILED");
 			}
 		} catch (err) {
-			sendResponse(res, "INTERNAL_SERVER_ERROR");
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -133,7 +135,7 @@ export default class UsersDAO {
 			const { token } = req.body;
 
 			if (!token) {
-				sendResponse(res, "AUTH_TOKEN_MISSING");
+				sendKeyResponse(res, "AUTH_TOKEN_MISSING");
 				return;
 			}
 
@@ -141,7 +143,7 @@ export default class UsersDAO {
 				const verified = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 				if (!verified) {
-					sendResponse(res, "UNAUTHORIZED");
+					sendKeyResponse(res, "UNAUTHORIZED");
 					return;
 				}
 
@@ -155,12 +157,14 @@ export default class UsersDAO {
 
 				const receipt = await users.insertOne(userDoc);
 
-				receipt.insertedId ? sendResponse(res, "SIGN_UP_SUCCESS") : sendResponse(res, "SOMETHING_WENT_WRONG");
+				receipt.insertedId
+					? sendKeyResponse(res, "SIGN_UP_SUCCESS")
+					: sendKeyResponse(res, "SOMETHING_WENT_WRONG");
 			} catch (err) {
-				sendResponse(res, "INVALID_AUTH_TOKEN");
+				sendKeyResponse(res, "INVALID_AUTH_TOKEN");
 			}
 		} catch (err) {
-			sendResponse(res, "INTERNAL_SERVER_ERROR");
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -176,14 +180,14 @@ export default class UsersDAO {
 			});
 
 			if (!userExists) {
-				sendResponse(res, "USER_NOT_FOUND");
+				sendKeyResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
 			const checkPassword = await compare(password, userDoc.password);
 
 			if (!checkPassword) {
-				sendResponse(res, "WRONG_PASSWORD");
+				sendKeyResponse(res, "WRONG_PASSWORD");
 				return;
 			}
 
@@ -198,9 +202,11 @@ export default class UsersDAO {
 				}
 			);
 
-			res.status(201).json({ ...getResponse("SIGN_IN_SUCCESS"), token: token });
+			sendCustomResponse(res, "SIGN_IN_SUCCESS", {
+				token: token,
+			});
 		} catch (err) {
-			sendResponse(res, "INTERNAL_SERVER_ERROR");
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -209,14 +215,14 @@ export default class UsersDAO {
 			const { token, email } = req.body;
 
 			if (!validator.isEmail(email)) {
-				sendResponse(res, "INVALID_EMAIL");
+				sendKeyResponse(res, "INVALID_EMAIL");
 				return;
 			}
 
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
-				sendResponse(res, "UNAUTHORIZED");
+				sendKeyResponse(res, "UNAUTHORIZED");
 				return;
 			}
 
@@ -228,7 +234,7 @@ export default class UsersDAO {
 			});
 
 			if (!userDoc) {
-				sendResponse(res, "USER_NOT_FOUND");
+				sendKeyResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
@@ -241,9 +247,9 @@ export default class UsersDAO {
 				}
 			);
 
-			sendResponse(res, "UPDATED");
+			sendKeyResponse(res, "UPDATED");
 		} catch (err) {
-			sendResponse(res, "INTERNAL_SERVER_ERROR");
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -252,14 +258,14 @@ export default class UsersDAO {
 			const { token, username } = req.body;
 
 			if (!validator.isAlphanumeric(username)) {
-				sendResponse(res, "INVALID_USERNAME");
+				sendKeyResponse(res, "INVALID_USERNAME");
 				return;
 			}
 
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
-				sendResponse(res, "UNAUTHORIZED");
+				sendKeyResponse(res, "UNAUTHORIZED");
 				return;
 			}
 
@@ -271,7 +277,7 @@ export default class UsersDAO {
 			});
 
 			if (!userDoc) {
-				sendResponse(res, "USER_NOT_FOUND");
+				sendKeyResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
@@ -284,9 +290,9 @@ export default class UsersDAO {
 				}
 			);
 
-			sendResponse(res, "UPDATED");
+			sendKeyResponse(res, "UPDATED");
 		} catch (err) {
-			sendResponse(res, "INTERNAL_SERVER_ERROR");
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 
@@ -297,7 +303,7 @@ export default class UsersDAO {
 			const verified = jwt.verify(token.session, process.env.NEXT_PUBLIC_JWT_SECRET);
 
 			if (!verified) {
-				sendResponse(res, "UNAUTHORIZED");
+				sendKeyResponse(res, "UNAUTHORIZED");
 				return;
 			}
 
@@ -309,7 +315,7 @@ export default class UsersDAO {
 			});
 
 			if (!userDoc) {
-				sendResponse(res, "USER_NOT_FOUND");
+				sendKeyResponse(res, "USER_NOT_FOUND");
 				return;
 			}
 
@@ -322,9 +328,9 @@ export default class UsersDAO {
 				}
 			);
 
-			sendResponse(res, "UPDATED");
+			sendKeyResponse(res, "UPDATED");
 		} catch (err) {
-			sendResponse(res, "INTERNAL_SERVER_ERROR");
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
 	};
 }
