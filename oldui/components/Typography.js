@@ -1,6 +1,16 @@
 import { motion } from "framer-motion";
 import { cx, cva } from "class-variance-authority";
-import { intents, sizes, fonts, shadows, animates, ws, ps, motions, maxws } from "ui/base";
+import {
+	intents,
+	sizes,
+	fonts,
+	shadows,
+	animates,
+	ws,
+	ps,
+	motions,
+	maxws,
+} from "oldui/base";
 
 export const Typography = ({ cta, props }) => {
 	const classes = cva(

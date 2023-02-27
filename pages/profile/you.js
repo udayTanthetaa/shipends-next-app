@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import validator from "validator";
 import { motion } from "framer-motion";
-import { Typography, Input, Button, LinkedSubtitle } from "ui";
+import { Typography, Input, Button, LinkedSubtitle } from "oldui";
 
 const You = () => {
 	const [user, setUser] = useState({
@@ -41,7 +41,10 @@ const You = () => {
 		}
 
 		if (property === "email") {
-			if (newUser[property].value === "" || !validator.isEmail(newUser[property].value)) {
+			if (
+				newUser[property].value === "" ||
+				!validator.isEmail(newUser[property].value)
+			) {
 				newUser[property].isValid = false;
 			} else {
 				newUser[property].isValid = false;
@@ -170,7 +173,11 @@ const You = () => {
 						placeholder="Username"
 						props={{
 							intent: `${
-								user["username"].isInitial ? "white" : user["username"].isValid ? "success" : "error"
+								user["username"].isInitial
+									? "white"
+									: user["username"].isValid
+									? "success"
+									: "error"
 							}`,
 							size: "md",
 							font: "semibold",
@@ -189,7 +196,11 @@ const You = () => {
 						placeholder="Password"
 						props={{
 							intent: `${
-								user["password"].isInitial ? "white" : user["password"].isValid ? "success" : "error"
+								user["password"].isInitial
+									? "white"
+									: user["password"].isValid
+									? "success"
+									: "error"
 							}`,
 							size: "md",
 							font: "semibold",
@@ -214,7 +225,11 @@ const You = () => {
 							animate: "primary",
 							w: "full",
 							p: "md",
-							className: `mt-2 ${isValidRequest() ? "cursor-pointer" : "cursor-not-allowed"}`,
+							className: `mt-2 ${
+								isValidRequest()
+									? "cursor-pointer"
+									: "cursor-not-allowed"
+							}`,
 						}}
 					/>
 				</div>

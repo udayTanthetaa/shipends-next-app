@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 // import { Header, Button, Input } from "../../ui";
 
-import { Button } from "ui";
+import { Button } from "oldui";
 
 const OldYou = () => {
 	const [user, setUser] = useState({
@@ -67,7 +67,10 @@ const OldYou = () => {
 		}
 
 		if (property === "email") {
-			if (newUser[property].value === "" || !validator.isEmail(newUser[property].value)) {
+			if (
+				newUser[property].value === "" ||
+				!validator.isEmail(newUser[property].value)
+			) {
 				newUser[property].isValid = false;
 			} else {
 				newUser[property].isValid = false;
@@ -151,7 +154,11 @@ const OldYou = () => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-center p-[12px]">
-				<img className="drop-shadow-sm" src="/favicon.ico" alt="Shipends Logo" />
+				<img
+					className="drop-shadow-sm"
+					src="/favicon.ico"
+					alt="Shipends Logo"
+				/>
 
 				<Header
 					cta="Welcome to Shipends!"
@@ -165,7 +172,12 @@ const OldYou = () => {
 					}}
 				/>
 
-				<Subtitle className="" headline="Don't have an account?" cta="Sign up here." path="signUp" />
+				<Subtitle
+					className=""
+					headline="Don't have an account?"
+					cta="Sign up here."
+					path="signUp"
+				/>
 
 				<div className="flex flex-col items-center mt-[16px] md:mt-[20px] lg:mt-[24px] w-full max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] space-y-[4px] md:space-y-[8px] lg:space-y-[12px]">
 					<Input
@@ -177,7 +189,11 @@ const OldYou = () => {
 						placeholder="Username"
 						props={{
 							intent: `${
-								user["username"].isInitial ? "white" : user["username"].isValid ? "success" : "error"
+								user["username"].isInitial
+									? "white"
+									: user["username"].isValid
+									? "success"
+									: "error"
 							}`,
 							size: "md",
 							w: "full",
@@ -193,14 +209,22 @@ const OldYou = () => {
 						placeholder="Password"
 						props={{
 							intent: `${
-								user["password"].isInitial ? "white" : user["password"].isValid ? "success" : "error"
+								user["password"].isInitial
+									? "white"
+									: user["password"].isValid
+									? "success"
+									: "error"
 							}`,
 							size: "md",
 							w: "full",
 						}}
 					/>
 
-					<Subtitle headline="Forgot password?" cta="Reset here." path="resetPassword" />
+					<Subtitle
+						headline="Forgot password?"
+						cta="Reset here."
+						path="resetPassword"
+					/>
 
 					<Button
 						onClick={() => {

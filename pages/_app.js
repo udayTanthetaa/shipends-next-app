@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { Navigation } from "../components";
 import SessionContext from "../session/sessionContext";
+import { Navbar } from "ui";
 
 const App = ({ Component, pageProps: { ...pageProps } }) => {
 	const router = useRouter();
@@ -32,7 +33,7 @@ const App = ({ Component, pageProps: { ...pageProps } }) => {
 
 	return (
 		<>
-			<div className={`font-RobotoFlex ${router.asPath === "/" ? "bg-isWhite" : "bg-isGrayLightEmphasis6"}`}>
+			<div className="font-RobotoFlex bg-isGrayLightEmphasis6 w-full flex flex-col items-center">
 				<SessionContext.Provider
 					value={{
 						state: {
@@ -41,7 +42,7 @@ const App = ({ Component, pageProps: { ...pageProps } }) => {
 						setSession: setSession,
 					}}
 				>
-					<Navigation />
+					<Navbar />
 					<Component {...pageProps} />
 					<Analytics />
 				</SessionContext.Provider>

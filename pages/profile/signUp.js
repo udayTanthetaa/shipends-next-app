@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import validator from "validator";
 import { motion } from "framer-motion";
-import { Typography, Input, Button, LinkedSubtitle } from "ui";
+import { Typography, Input, Button, LinkedSubtitle } from "oldui";
 import { toast } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 
@@ -43,7 +43,10 @@ const SignUp = () => {
 		}
 
 		if (property === "email") {
-			if (newUser[property].value === "" || !validator.isEmail(newUser[property].value)) {
+			if (
+				newUser[property].value === "" ||
+				!validator.isEmail(newUser[property].value)
+			) {
 				newUser[property].isValid = false;
 			} else {
 				newUser[property].isValid = true;
@@ -75,7 +78,11 @@ const SignUp = () => {
 	};
 
 	const isValidRequest = () => {
-		if (user.email.isValid === true && user.username.isValid === true && user.password.isValid === true) {
+		if (
+			user.email.isValid === true &&
+			user.username.isValid === true &&
+			user.password.isValid === true
+		) {
 			return true;
 		} else {
 			return false;
@@ -173,7 +180,8 @@ const SignUp = () => {
 								w: "fit",
 								maxw: "none",
 								p: "md",
-								className: "bg-isWhite rounded-xl shadow-sm bg-isGreenDark",
+								className:
+									"bg-isWhite rounded-xl shadow-sm bg-isGreenDark",
 							}}
 						/>
 						<Typography
@@ -186,7 +194,8 @@ const SignUp = () => {
 								w: "fit",
 								maxw: "none",
 								p: "sm",
-								className: "mt-3 bg-isWhite rounded-lg shadow-sm bg-isRedDark",
+								className:
+									"mt-3 bg-isWhite rounded-lg shadow-sm bg-isRedDark",
 							}}
 						/>
 					</>
@@ -233,7 +242,11 @@ const SignUp = () => {
 								placeholder="Email"
 								props={{
 									intent: `${
-										user["email"].isInitial ? "white" : user["email"].isValid ? "success" : "error"
+										user["email"].isInitial
+											? "white"
+											: user["email"].isValid
+											? "success"
+											: "error"
 									}`,
 									size: "md",
 									font: "semibold",
@@ -305,7 +318,11 @@ const SignUp = () => {
 									animate: "primary",
 									w: "full",
 									p: "md",
-									className: `mt-2 ${isValidRequest() ? "cursor-pointer" : "cursor-not-allowed"}`,
+									className: `mt-2 ${
+										isValidRequest()
+											? "cursor-pointer"
+											: "cursor-not-allowed"
+									}`,
 								}}
 							/>
 						</div>
