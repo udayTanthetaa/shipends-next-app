@@ -11,9 +11,7 @@ const MDXComponents = {
 	h2: (props) => {
 		return (
 			<h2
-				className="mt-[8px] md:mt-[12px] lg:mt-[16px] mb-[8px] md:mb-[12px] lg:mb-[16px]
-				border-b-[1px] border-isGrayLightEmphasis4 text-lg md:text-xl lg:text-2xl
-				font-semibold"
+				className="my-2 text-lg font-semibold border-b-2 md:text-xl text-isGrayDarkEmphasis5 border-isGrayLightEmphasis5"
 				{...props}
 			/>
 		);
@@ -29,9 +27,7 @@ const MDXComponents = {
 		);
 	},
 	p: (props) => {
-		return (
-			<div className="mb-[8px] md:mb-[12px] lg:mb-[16px]" {...props} />
-		);
+		return <div className="mb-2" {...props} />;
 	},
 	em: (props) => {
 		return <span className="italic" {...props} />;
@@ -50,7 +46,7 @@ const MDXComponents = {
 		if (props.href.slice(0, 2) === "./") {
 			return (
 				<Link
-					className="text-isBlueDarkEmphasis hover:cursor-pointer hover:border-b-[2px] hover:border-isBlueDarkEmphasis"
+					className="inline-block transition duration-300 ease-in-out text-isBlueDark hover:cursor-pointer hover:border-b-2 hover:border-isBlueDark"
 					href={{
 						pathname: "/learn/[ship]/[sail]",
 						query: {
@@ -65,16 +61,9 @@ const MDXComponents = {
 		} else if (props.href.charAt(0) === "#") {
 			return (
 				<div className="flex flex-row group">
-					<Link
-						target="_self"
-						rel="noopener noreferrer"
-						passHref
-						{...props}
-					/>
+					<Link target="_self" rel="noopener noreferrer" passHref {...props} />
 					&nbsp;
-					<div className="hidden font-bold text-isGrayDark2 group-hover:block">
-						#
-					</div>
+					<div className="hidden font-bold text-isGrayDark2 group-hover:block">#</div>
 				</div>
 			);
 		} else {
@@ -91,68 +80,42 @@ const MDXComponents = {
 	},
 	blockquote: (props) => {
 		return (
-			<blockquote
-				className="mb-[8px] md:mb-[12px] lg:mb-[16px] rounded-r-lg border-l-[5px]
-				border-isGrayLightEmphasis4 bg-isGrayLightEmphasis6 py-[4px] px-[6px] leading-tight
-                 tracking-wide  md:border-l-[6px] lg:border-l-[8px] md:px-[10px] md:py-[8px]"
-			>
-				<div
-					className="mt-[6px] md:mt-[8px] lg:mt-[12px] ml-[6px] mr-[6px] text-isGhost"
-					{...props}
-				/>
+			<blockquote className="px-2 py-1 my-2 mb-2 leading-tight tracking-wide border-l-4 rounded-r-lg border-isGrayLightEmphasis4 bg-isGrayLightEmphasis6">
+				<div className="mt-2 ml-2 mr-2 text-isGrayDark3" {...props} />
 			</blockquote>
 		);
 	},
 	li: (props) => {
-		return <li className="mb-[4px] leading-tight md:mb-[6px]" {...props} />;
+		return <li className="mb-1 leading-tight" {...props} />;
 	},
 	ul: (props) => {
 		return (
-			<div className="mb-[8px] md:mb-[12px] lg:mb-[16px] ml-[15px] list-disc leading-tight md:ml-[20px]">
-				<div
-					className="mb-[8px] md:mb-[12px] lg:mb-[16px]"
-					{...props}
-				/>
+			<div className="mb-2 ml-3 list-disc leading-tight md:ml-[20px]">
+				<div className="mb-2" {...props} />
 			</div>
 		);
 	},
 	ol: (props) => {
 		return (
-			<div className="mb-[8px] md:mb-[12px] lg:mb-[16px] ml-[15px] list-decimal leading-tight md:ml-[20px]">
-				<div
-					className="mb-[8px] md:mb-[12px] lg:mb-[16px]"
-					{...props}
-				/>
+			<div className="mb-2 ml-3 list-decimal leading-tight md:ml-[20px]">
+				<div className="mb-2" {...props} />
 			</div>
 		);
 	},
 	img: (props) => {
-		return (
-			<Image
-				{...props}
-				alt="image"
-				className="rounded-md md:rounded-lg lg:rounded-xl"
-			/>
-		);
+		return <Image {...props} alt="image" className="rounded-lg" />;
 	},
 	code: (props) => {
 		return (
 			<span
-				className="inline-block align-middle
-				 rounded-md bg-isGrayLightEmphasis5 font-mono text-isGrayDarkEmphasis4
-				 py-[0.5px] px-[4px] md:py-[1px] md:px-[5px] lg:[1.5px] lg:px-[6px] font-medium
-				 text-2xs md:text-xs lg:text-sm"
+				className="inline-block px-2 py-0 font-mono text-xs font-medium align-middle rounded-md md:text-sm bg-isGrayLightEmphasis6 text-isGrayDarkEmphasis3"
 				{...props}
 			/>
 		);
 	},
 	pre: (props) => {
 		return (
-			<pre
-				className="mb-[8px] md:mb-[12px] lg:mb-[16px] md:py-[8px] md:px-[16px]
-			 overflow-x-auto rounded-md md:rounded-lg lg:rounded-xl bg-isGrayLightEmphasis6 py-[6px] px-[12px]
-			 text-2xs md:text-xs lg:text-sm"
-			>
+			<pre className="p-3 overflow-x-auto text-xs rounded-xl md:text-sm bg-isGrayLightEmphasis6">
 				<code className="font-mono" {...props} />
 			</pre>
 		);

@@ -4,23 +4,15 @@ import MDXComponents from "./MDXComponents";
 const Content = ({ frontmatter, source }) => {
 	return (
 		<>
-			<div
-				className="w-full rounded-t-lg md:rounded-t-xl lg:rounded-t-2xl
-					bg-isBlueDark font-extrabold text-isWhite text-center
-					text-md md:text-lg lg:text-xl py-[6px] px-[6px]
-					"
-			>
+			<div className="w-full px-3 py-1 text-lg font-extrabold tracking-tight text-center md:text-xl rounded-t-xl bg-isBlueDark text-isWhite">
 				{frontmatter.title}&nbsp;&nbsp;
-				<span
-					className="rounded-lg font-extrabold bg-isWhite text-isBlueDark
-									py-[2px] px-[4px] md:py-[3px] md:px-[6px] lg:py-[4px] lg:px-[8px]"
-				>
+				<span className="px-2 font-bold rounded-md bg-isWhite text-isBlueDark">
 					--takes {frontmatter.takes} min.
 				</span>
 			</div>
-			<div className="flex flex-col items-start w-full text-xs place-content-center md:text-sm lg:text-md">
-				<div className="flex flex-col w-full rounded-b-lg md:rounded-b-xl lg:rounded-b-2xl bg-isWhite text-isGrayDarkEmphasis4 ">
-					<div className="px-[14px] md:px-[20px] lg:px-[26px] text-xs md:text-sm lg:text-md break-words">
+			<div className="flex flex-col items-start w-full place-content-center">
+				<div className="flex flex-col w-full rounded-b-xl bg-isWhite text-isGrayDarkEmphasis3 ">
+					<div className="px-3 text-sm break-words md:text-lg md:px-6">
 						<MDXRemote components={MDXComponents} {...source} />
 					</div>
 				</div>

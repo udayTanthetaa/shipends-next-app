@@ -57,18 +57,18 @@ const Ship = ({ index }) => {
 	const getColorSet = (num) => {
 		return (
 			<>
-				<div className="z-50 w-3 h-3 p-0 rounded-full md:h-4 md:w-4 lg:h-5 lg:w-5 drop-shadow-sm bg-isGolden" />
-				<div className="lg:-ml-[6px] md:-ml-[4px] -ml-[2px] z-40 w-3 h-3 p-0 rounded-full md:h-4 md:w-4 lg:h-5 lg:w-5 drop-shadow-sm bg-isMagenta" />
-				<div className="lg:-ml-[6px] md:-ml-[4px] -ml-[2px] z-30 w-3 h-3 p-0 rounded-full md:h-4 md:w-4 lg:h-5 lg:w-5 drop-shadow-sm bg-isCyan" />
+				<div className="z-20 w-5 h-5 p-0 rounded-full drop-shadow-sm bg-isGolden" />
+				<div className="z-30 w-5 h-5 p-0 -ml-2 rounded-full drop-shadow-sm bg-isMagenta" />
+				<div className="z-40 w-5 h-5 p-0 -ml-2 rounded-full drop-shadow-sm bg-isCyan" />
 			</>
 		);
 	};
 
 	return (
 		<>
-			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start">
-				<div className="w-full h-full lg:max-w-[1200px] flex flex-col p-[12px] space-y-[12px] mt-[64px] sm:mt-[64px] md:mt-[68px] lg:mt-[74px]">
-					<div className="w-full -mt-[16px] relative">
+			<div className="flex flex-col items-center w-full min-h-screen p-3 bg-isGrayLightEmphasis6 place-content-start">
+				<div className="w-full h-full max-w-6xl flex flex-col space-y-[12px] mt-[64px] sm:mt-[64px] md:mt-[68px] lg:mt-[74px]">
+					{/* <div className="w-full -mt-[16px] relative">
 						<img
 							src={index.banner}
 							alt={`${index.parent} banner`}
@@ -89,7 +89,7 @@ const Ship = ({ index }) => {
 						layout={"fill"}
 						className="z-[1] w-full object-cover object-center rounded-md md:rounded-lg lg:rounded-xl h-[150px] md:h-[200px] lg:h-[250px]
 						"
-					/>
+					/> */}
 
 					{index.sections.map((section, key) => {
 						return (
@@ -97,26 +97,20 @@ const Ship = ({ index }) => {
 								href={`${index.parent}/${index[section].path}`}
 								key={key}
 								passHref
-								className="z-[3] group"
+								className="z-3 group"
 							>
 								<motion.div
-									whileHover={{
-										transition: { duration: 0.02 },
-									}}
 									whileTap={{
-										scale: 0.95,
-										transition: { duration: 0.02 },
+										scale: 0.9,
+										transition: { duration: 0.03 },
 									}}
-									className="w-full rounded-md bg-isWhite transition duration-300 ease-in-out delay-50 group-hover:bg-isBlueDark md:rounded-lg lg:rounded-xl
-                                shadow-sm flex flex-col p-[15px] md:p-[20px] lg:p-[25px] "
+									className="flex flex-col w-full transition duration-300 ease-in-out shadow-sm shadow-isGrayLightEmphasis3 bg-isWhite group-hover:bg-isBlueDark rounded-xl"
 								>
-									<div className="text-lg font-bold leading-3 transition duration-300 ease-in-out group-hover:text-isWhite group-hover:text-is md:text-xl lg:text-2xl text-isGrayDarkEmphasis4 delay-50">
+									<div className="px-3 pt-3 pb-2 text-lg font-bold leading-5 transition duration-300 ease-in-out group-hover:text-isWhite text-isGrayDarkEmphasis3">
 										{index[section].title}
 									</div>
-									<div
-										className="mt-[4px] text-xs font-medium md:text-sm lg:text-md text-isGrayDark2
-                                     group-hover:text-isWhite transition duration-300 ease-in-out delay-50 flex flex-row items-center"
-									>
+
+									<div className="flex flex-row items-center px-3 text-sm font-medium transition duration-300 ease-in-out text-isGrayDark2 group-hover:text-isWhite">
 										<div className="flex flex-row items-center">
 											{getColorSet(Math.floor(Math.random() * 2 + 1).toString())}
 										</div>
@@ -125,7 +119,7 @@ const Ship = ({ index }) => {
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 24 24"
-											className="w-4 h-4 transition duration-300 ease-in-out drop-shadow-sm md:h-5 md:w-5 lg:h-6 lg:w-6 fill-isRedLight group-hover:fill-isRedDark stroke-none delay-50"
+											className="w-6 h-6 transition duration-300 ease-in-out drop-shadow-sm fill-isRedLight group-hover:fill-isRedDark stroke-none"
 										>
 											<path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
 										</svg>
@@ -135,7 +129,7 @@ const Ship = ({ index }) => {
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 24 24"
-											className="w-4 h-4 transition duration-300 ease-in-out md:h-5 md:w-5 lg:h-6 lg:w-6 drop-shadow-sm fill-isGreenLight group-hover:fill-isGreenDark stroke-none delay-50"
+											className="w-6 h-6 transition duration-300 ease-in-out drop-shadow-sm fill-isGreenLight group-hover:fill-isGreenDark stroke-none delay-50"
 										>
 											<path
 												fillRule="evenodd"
@@ -146,11 +140,10 @@ const Ship = ({ index }) => {
 										&nbsp;
 										{index[section].takes} min
 									</div>
-									<hr className="mt-[4px] w-full transition duration-300 ease-in-out delay-50 border-isGrayLightEmphasis4 group-hover:border-isWhite" />
-									<div
-										className="leading-5 text-sm font-medium md:text-md lg:text-lg mt-[10px] md:mt-[15px] lg:mt-[20px] text-isGrayDarkEmphasis
-                                    group-hover:text-isWhite transition duration-300 ease-in-out delay-50"
-									>
+
+									<hr className="w-full my-2 transition duration-300 ease-in-out border-t-2 border-isGrayLightEmphasis5 group-hover:border-isGrayLightEmphasis6" />
+
+									<div className="px-3 pb-2 font-medium leading-5 transition duration-300 ease-in-out text-md text-isGrayDarkEmphasis group-hover:text-isWhite">
 										{index[section].description}
 									</div>
 								</motion.div>
