@@ -22,7 +22,7 @@ export const ShipCard = ({ ship }) => {
 
 	return (
 		<>
-			<div className="flex flex-col justify-between shadow-sm bg-isWhite rounded-xl shadow-isGrayLightEmphasis3">
+			<div className="flex flex-col shadow-sm bg-isWhite rounded-xl shadow-isGrayLightEmphasis3">
 				<div className="relative flex flex-col w-full h-28 ">
 					<div className="absolute w-full h-full">
 						<LoadingImage />
@@ -47,16 +47,18 @@ export const ShipCard = ({ ship }) => {
 						</div>
 					</div>
 
-					<div className="ml-2 text-lg font-bold text-isGrayDarkEmphasis3">{ship.name}</div>
+					<div className="ml-2 text-lg md:text-xl font-bold text-isGrayDarkEmphasis3">
+						{ship.name}
+					</div>
 				</div>
 
-				<hr className="border-t-2 border-isGrayLightEmphasis5" />
+				<hr className="border-t-2 md:border-t-4 border-isGrayLightEmphasis5" />
 
-				<div className="px-3 py-2 text-sm font-medium text-center text-isGrayLightEmphasis">
+				<div className="px-3 py-2 text-sm md:text-md font-medium text-center text-isGrayLightEmphasis">
 					{ship.description}
 				</div>
 
-				<div className="flex flex-col items-end pb-3 pr-3">
+				<div className="mt-auto flex flex-col items-end pb-3 pr-3">
 					<Link href={`/learn/${ship.path}`} passHref>
 						{ship.status === "active" ? (
 							<Button
@@ -72,7 +74,8 @@ export const ShipCard = ({ ship }) => {
 								cta="Coming Soon."
 								props={{
 									intent: "light",
-									className: "cursor-not-allowed shadow-isGrayLightEmphasis3",
+									className:
+										"cursor-not-allowed shadow-isGrayLightEmphasis3",
 								}}
 							/>
 						)}

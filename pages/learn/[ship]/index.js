@@ -16,11 +16,14 @@ export const getStaticProps = async (context) => {
 	const repo = Constants.repo;
 
 	const pathIndex = `${params.ship}/index.json`;
-	const responseIndex = await octokit.request("GET /repos/{owner}/{repo}/contents/{path}{?ref}", {
-		owner: owner,
-		repo: repo,
-		path: pathIndex,
-	});
+	const responseIndex = await octokit.request(
+		"GET /repos/{owner}/{repo}/contents/{path}{?ref}",
+		{
+			owner: owner,
+			repo: repo,
+			path: pathIndex,
+		}
+	);
 
 	const index = JSON.parse(Buffer.from(responseIndex.data.content, "base64"));
 
@@ -67,7 +70,7 @@ const Ship = ({ index }) => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen p-3 bg-isGrayLightEmphasis6 place-content-start">
-				<div className="w-full h-full max-w-6xl flex flex-col space-y-[12px] mt-[64px] sm:mt-[64px] md:mt-[68px] lg:mt-[74px]">
+				<div className="w-full h-full max-w-6xl flex flex-col space-y-3 mt-[64px] sm:mt-[64px] md:mt-[68px] lg:mt-[74px]">
 					{/* <div className="w-full -mt-[16px] relative">
 						<img
 							src={index.banner}
@@ -106,16 +109,21 @@ const Ship = ({ index }) => {
 									}}
 									className="flex flex-col w-full transition duration-300 ease-in-out shadow-sm shadow-isGrayLightEmphasis3 bg-isWhite group-hover:bg-isBlueDark rounded-xl"
 								>
-									<div className="px-3 pt-3 pb-2 text-lg font-bold leading-5 transition duration-300 ease-in-out group-hover:text-isWhite text-isGrayDarkEmphasis3">
+									<div className="px-3 md:px-5 pt-2 md:pt-4 pb-2 text-lg font-bold leading-5 transition duration-300 ease-in-out group-hover:text-isWhite text-isGrayDarkEmphasis3">
 										{index[section].title}
 									</div>
 
-									<div className="flex flex-row items-center px-3 text-sm font-medium transition duration-300 ease-in-out text-isGrayDark2 group-hover:text-isWhite">
+									<div className="flex flex-row items-center px-3 md:px-5 text-sm font-medium transition duration-300 ease-in-out text-isGrayDark2 group-hover:text-isWhite">
 										<div className="flex flex-row items-center">
-											{getColorSet(Math.floor(Math.random() * 2 + 1).toString())}
+											{getColorSet(
+												Math.floor(
+													Math.random() * 2 + 1
+												).toString()
+											)}
 										</div>
 										&nbsp;
-										{Math.floor(Math.random() * 100 + 100)}+ Shippers&nbsp;--&nbsp;
+										{Math.floor(Math.random() * 100 + 100)}+
+										Shippers&nbsp;--&nbsp;
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											viewBox="0 0 24 24"
@@ -141,9 +149,9 @@ const Ship = ({ index }) => {
 										{index[section].takes} min
 									</div>
 
-									<hr className="w-full my-2 transition duration-300 ease-in-out border-t-2 border-isGrayLightEmphasis5 group-hover:border-isGrayLightEmphasis6" />
+									<hr className="w-full my-2 transition duration-300 ease-in-out border-t-2 md:border-t-4 border-isGrayLightEmphasis5 group-hover:border-isGrayLightEmphasis6" />
 
-									<div className="px-3 pb-2 font-medium leading-5 transition duration-300 ease-in-out text-md text-isGrayDarkEmphasis group-hover:text-isWhite">
+									<div className="px-3 md:px-5 pb-2 md:pb-4 font-medium leading-5 transition duration-300 ease-in-out text-md text-isGrayDarkEmphasis group-hover:text-isWhite">
 										{index[section].description}
 									</div>
 								</motion.div>
