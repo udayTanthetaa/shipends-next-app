@@ -1,8 +1,7 @@
-import { motion } from "framer-motion";
 import { cx, cva } from "class-variance-authority";
 
-export const Button = ({ onClick, cta, disabled, loading, props, forceCta }) => {
-	const classes = cva("flex flex-row text-center items-center place-content-center outline-none focus:outline-none", {
+export const RelativeNotification = ({ text, props }) => {
+	const classes = cva("absolute flex flex-col items-center w-full text-center", {
 		variants: {
 			intent: {
 				white: "bg-isWhite hover:bg-isGrayLightEmphasis6 text-isGrayDarkEmphasis3",
@@ -38,6 +37,7 @@ export const Button = ({ onClick, cta, disabled, loading, props, forceCta }) => 
 				black: "font-black",
 				none: "",
 			},
+
 			shadow: {
 				sm: "shadow-sm shadow-isGrayLightEmphasis3",
 				md: "shadow-md shadow-isGrayLightEmphasis3",
@@ -51,48 +51,34 @@ export const Button = ({ onClick, cta, disabled, loading, props, forceCta }) => 
 				md: "transition ease-in-out duration-300",
 				none: "",
 			},
-			w: {
-				fit: "w-fit",
-				full: "w-full",
+			maxw: {
+				sm: "max-w-sm",
 				none: "",
 			},
 			p: {
 				sm: "py-1 px-4",
 				none: "",
 			},
-			disabled: {
-				true: "cursor-not-allowed",
-				false: "",
-			},
 		},
 		defaultVariants: {
-			intent: "light",
-			size: "sm",
+			intent: "error",
+			size: "lg",
 			font: "bold",
+			maxw: "sm",
 			shadow: "sm",
 			animate: "md",
 			w: "fit",
 			p: "sm",
-			disabled: "false",
 		},
 	});
 
-	const spinner = () => {
-		return <div className="mx-3 border-4 rounded-full w-7 h-7 animate-spin border-t-transparent border-isWhite" />;
-	};
-
 	return (
-		<motion.button
-			whileTap={{
-				scale: 0.9,
-				transition: { duration: 0.03 },
-			}}
-			onClick={onClick}
-			disabled={disabled}
-			loading={loading}
-			className={cx(classes({ ...props }))}
+		<div
+			className={`relative flex-col items-center w-full
+            ${text === "" ? "hidden" : "flex"} transition duration-300 ease-in-out
+            `}
 		>
-			{forceCta === true ? cta : loading === true ? "" : cta} {loading === true ? spinner() : ""}
-		</motion.button>
+			<div className={cx(classes({ ...props }))}>{text}</div>
+		</div>
 	);
 };

@@ -45,6 +45,18 @@ export const Codemap = {
 		code: 400,
 		message: "Invalid Username",
 	},
+	USERNAME_NOT_ALPHANUMERIC: {
+		code: 400,
+		message: "Username must be Alphanumeric",
+	},
+	USERNAME_LENGTH: {
+		code: 400,
+		message: "Username must be less than 30 characters",
+	},
+	PASSWORD_LENGTH: {
+		code: 400,
+		message: "Password must be less than 30 characters",
+	},
 	INVALID_PASSWORD: {
 		code: 400,
 		message: "Invalid Password",

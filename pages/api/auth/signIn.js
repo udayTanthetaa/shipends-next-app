@@ -1,6 +1,6 @@
 import clientPromise from "../../../mongodb";
 import UsersDAO from "../../../mongodb/dao/usersDAO";
-import { sendResponse } from "../../../responseCodes";
+import { sendKeyResponse } from "responses";
 
 const handler = async (req, res) => {
 	if (req.method === "POST") {
@@ -10,10 +10,10 @@ const handler = async (req, res) => {
 			await UsersDAO.injectDB(client);
 			await UsersDAO.signIn(req, res);
 		} catch (err) {
-			sendResponse(res, "BAD_REQUEST");
+			sendKeyResponse(res, "BAD_REQUEST");
 		}
 	} else {
-		sendResponse(res, "INVALID_ROUTE");
+		sendKeyResponse(res, "INVALID_ROUTE");
 	}
 };
 

@@ -4,8 +4,6 @@ import { hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import validator from "validator";
 import nodemailer from "nodemailer";
-// import { getResponse, sendResponse } from "../../responseCodes";
-
 import { sendCustomResponse, sendKeyResponse } from "responses";
 
 let users;
@@ -24,33 +22,45 @@ export default class UsersDAO {
 	};
 
 	static isEmailValid = (res, email) => {
-		let status = true;
+		if (email === undefined || email === "" || email.length > 350 || !validator.isEmail(email)) {
+			sendKeyResponse(res, "INVALID_EMAIL");
+			return false;
+		}
 
-		if (!validator.isEmail(email)) status = false;
-		if (email.length > 350) status = false;
-		if (status === false) sendKeyResponse(res, "INVALID_EMAIL");
-
-		return status;
+		return true;
 	};
 
 	static isUsernameValid = (res, username) => {
-		let status = true;
+		if (username === undefined || username === "") {
+			sendKeyResponse(res, "INVALID_USERNAME");
+			return false;
+		}
 
-		if (!validator.isAlphanumeric(username)) status = false;
-		if (username.length > 30) status = false;
-		if (status === false) sendKeyResponse(res, "INVALID_USERNAME");
+		if (!validator.isAlphanumeric(username)) {
+			sendKeyResponse(res, "USERNAME_NOT_ALPHANUMERIC");
+			return false;
+		}
 
-		return status;
+		if (username.length > 30) {
+			sendKeyResponse(res, "USERNAME_LENGTH");
+			return false;
+		}
+
+		return true;
 	};
 
 	static isPasswordValid = (res, password) => {
-		let status = true;
+		if (password === undefined || password === "") {
+			sendKeyResponse(res, "INVALID_PASSWORD");
+			return false;
+		}
 
-		if (password === "") status = false;
-		if (password.length > 101) status = false;
-		if (status === false) sendKeyResponse(res, "INVALID_PASSWORD");
+		if (password.length > 101) {
+			sendKeyResponse(res, "PASSWORD_LENGTH");
+			return false;
+		}
 
-		return status;
+		return true;
 	};
 
 	static isUsernameUnique = async (res, username) => {
@@ -79,6 +89,48 @@ export default class UsersDAO {
 		return true;
 	};
 
+	static signIn = async (req, res) => {
+		try {
+			const { username, password } = req.body;
+
+			if (!this.isUsernameValid(res, username)) return;
+			if (!this.isPasswordValid(res, password)) return;
+
+			const userExists = await users.findOne({
+				username: username,
+			});
+
+			if (!userExists) {
+				sendKeyResponse(res, "USER_NOT_FOUND");
+				return;
+			}
+
+			const checkPassword = await compare(password, userDoc.password);
+
+			if (!checkPassword) {
+				sendKeyResponse(res, "WRONG_PASSWORD");
+				return;
+			}
+
+			const token = jwt.sign(
+				{
+					id: userDoc._id,
+				},
+				process.env.NEXT_PUBLIC_JWT_SECRET,
+				{
+					allowInsecureKeySizes: true,
+					expiresIn: 365 * 24 * 60 * 60,
+				}
+			);
+
+			sendCustomResponse(res, "SIGN_IN_SUCCESS", {
+				token: token,
+			});
+		} catch (err) {
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
+		}
+	};
+
 	static signUp = async (req, res) => {
 		try {
 			const { email, username, password } = req.body;
@@ -102,7 +154,7 @@ export default class UsersDAO {
 				}
 			);
 
-			const verificationUrl = `${req.headers.origin}/verify?token=${token}`;
+			const verificationUrl = `${req.headers.origin}/profile/verify?token=${token}`;
 
 			const transporter = nodemailer.createTransport({
 				service: "gmail",
@@ -155,6 +207,11 @@ export default class UsersDAO {
 					password: user.password,
 				};
 
+				if (!this.isEmailUnique(user.email)) {
+					sendKeyResponse(res, "SIGN_UP_SUCCESS");
+					return;
+				}
+
 				const receipt = await users.insertOne(userDoc);
 
 				receipt.insertedId
@@ -163,48 +220,6 @@ export default class UsersDAO {
 			} catch (err) {
 				sendKeyResponse(res, "INVALID_AUTH_TOKEN");
 			}
-		} catch (err) {
-			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
-		}
-	};
-
-	static signIn = async (req, res) => {
-		try {
-			const { username, password } = req.body;
-
-			if (!this.isUsernameValid(res, username)) return;
-			if (!this.isPasswordValid(res, password)) return;
-
-			const userExists = await users.findOne({
-				username: username,
-			});
-
-			if (!userExists) {
-				sendKeyResponse(res, "USER_NOT_FOUND");
-				return;
-			}
-
-			const checkPassword = await compare(password, userDoc.password);
-
-			if (!checkPassword) {
-				sendKeyResponse(res, "WRONG_PASSWORD");
-				return;
-			}
-
-			const token = jwt.sign(
-				{
-					id: userDoc._id,
-				},
-				process.env.NEXT_PUBLIC_JWT_SECRET,
-				{
-					allowInsecureKeySizes: true,
-					expiresIn: 365 * 24 * 60 * 60,
-				}
-			);
-
-			sendCustomResponse(res, "SIGN_IN_SUCCESS", {
-				token: token,
-			});
 		} catch (err) {
 			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
 		}
