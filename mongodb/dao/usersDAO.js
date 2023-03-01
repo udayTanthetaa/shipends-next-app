@@ -89,16 +89,21 @@ export default class UsersDAO {
 		return true;
 	};
 
-	static isAccountCreted = async (res, email, username) => {
+	static isAccountCreated = async (res, email, username) => {
 		const emailExists = await users.findOne({
 			email: email,
 		});
+
+		if (emailExists) {
+			sendKeyResponse(res, "SIGN_UP_SUCCESS");
+			return true;
+		}
 
 		const usernameExists = await users.findOne({
 			username: username,
 		});
 
-		if (emailExists || usernameExists) {
+		if (usernameExists) {
 			sendKeyResponse(res, "SIGN_UP_SUCCESS");
 			return true;
 		}
@@ -167,7 +172,7 @@ export default class UsersDAO {
 				process.env.NEXT_PUBLIC_JWT_SECRET,
 				{
 					allowInsecureKeySizes: true,
-					expiresIn: 10 * 60, // 10 minutes
+					expiresIn: 10 * 60 * 1000, // 10 minutes
 				}
 			);
 
@@ -224,7 +229,7 @@ export default class UsersDAO {
 					password: user.password,
 				};
 
-				if (this.isAccountCreted(res, email, username)) return;
+				if (await this.isAccountCreated(res, user.email, user.username)) return;
 
 				const receipt = await users.insertOne(userDoc);
 

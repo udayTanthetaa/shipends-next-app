@@ -96,7 +96,7 @@ const You = () => {
 							pathname: "/profile/you",
 						}}
 						cta="Have an account already?"
-						linkText="Sign in here."
+						linkText="Sign In here."
 						mainProps={{
 							className: "mt-1 mb-6",
 						}}
@@ -148,7 +148,7 @@ const You = () => {
 							sendAuthRequest();
 						}}
 						cta="Sign Up"
-						loading={status.value === "LOADING" ? "true" : "false"}
+						loading={status.value === "LOADING" ? true : false}
 						props={{
 							intent: "primary",
 							size: "lg",

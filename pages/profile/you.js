@@ -104,7 +104,7 @@ const You = () => {
 							pathname: "/profile/signUp",
 						}}
 						cta="Don't have an account?"
-						linkText="Sign up here."
+						linkText="Sign Up here."
 						mainProps={{
 							className: "mt-1 mb-6",
 						}}

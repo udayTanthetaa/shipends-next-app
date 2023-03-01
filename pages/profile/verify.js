@@ -1,6 +1,7 @@
 import { Button } from "ui";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const Verify = () => {
 	const Router = useRouter();
@@ -63,9 +64,27 @@ const Verify = () => {
 							status.value === "LOADING" ? "primary" : status.value === "SUCCESS" ? "success" : "error",
 						size: "lg",
 						w: "full",
-						className: "max-w-6xl h-10",
+						className: "max-w-6xl",
 					}}
 				/>
+				<Link
+					target="_self"
+					rel="noopener noreferrer"
+					href={{
+						pathname: "/profile/you",
+					}}
+				>
+					<Button
+						cta={status.value === "SUCCESS" ? "Click here to Sign In." : ""}
+						forceCta={true}
+						props={{
+							intent: "primary",
+							size: "lg",
+							w: "fit",
+							className: `mt-3 ${status.value === "SUCCESS" ? "" : "hidden"}`,
+						}}
+					/>
+				</Link>
 			</div>
 		</>
 	);
