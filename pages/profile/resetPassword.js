@@ -3,11 +3,11 @@ import validator from "validator";
 import { RelativeNotification, Button, IconInput, Heading, LinkedSubtitle } from "ui";
 import { motion } from "framer-motion";
 
-const You = () => {
+const ResetPassword = () => {
 	const [user, setUser] = useState({
+		email: "",
 		username: "",
 		password: "",
-		email: "",
 	});
 
 	const [status, setStatus] = useState({
@@ -38,12 +38,13 @@ const You = () => {
 				message: "",
 			});
 
-			const res = await fetch("/api/auth/resetPassword", {
+			const res = await fetch("/api/auth/signUp", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
+					email: user.email,
 					username: user.username,
 					password: user.password,
 				}),
@@ -51,20 +52,10 @@ const You = () => {
 
 			const data = await res.json();
 
-			if (data.token) {
-				setStatus({
-					status: "SUCCESS",
-					message: "Sign In Successful",
-				});
-
-				sessionContext.setSession(data.token);
-				localStorage.setItem("shipper", data.token);
-			} else {
-				setStatus({
-					status: "PENDING",
-					message: data.message,
-				});
-			}
+			setStatus({
+				value: data.code === 201 ? "SUCCESS" : "ERROR",
+				message: data.message,
+			});
 		} catch (err) {
 			setStatus({
 				...status,
@@ -88,86 +79,97 @@ const You = () => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen p-3 place-content-center">
-				<Heading
-					cta="Welcome to Shipends!"
-					props={{
-						className: "",
-					}}
-				/>
-
-				<LinkedSubtitle
-					href={{
-						pathname: "/profile/signUp",
-					}}
-					cta="Don't have an account?"
-					linkText="Sign Up here."
-					mainProps={{
-						className: "mt-1 mb-6",
-					}}
-				/>
-
-				<div className="flex flex-col items-center w-full max-w-xs space-y-2 md:max-w-sm">
-					<IconInput
-						iconName="user"
-						type="text"
-						value={user.username}
-						onChange={(e) => {
-							editUser(e, "username");
-						}}
-						placeholder="Username"
-						iconProps={{
-							intent: "primary",
+				<div
+					className={`flex-col items-center w-full h-full
+					${status.value === "SUCCESS" ? "hidden" : "flex"}
+					`}
+				>
+					<Heading
+						cta="Welcome to Shipends!"
+						props={{
+							className: "",
 						}}
 					/>
 
-					<IconInput
-						iconName="password"
-						type="password"
-						value={user.password}
-						onChange={(e) => {
-							editUser(e, "password");
+					<LinkedSubtitle
+						href={{
+							pathname: "/profile/you",
 						}}
-						placeholder="Password"
-						iconProps={{
-							intent: "success",
+						cta="Have an account already?"
+						linkText="Sign In here."
+						mainProps={{
+							className: "mt-1 mb-6",
+						}}
+					/>
+
+					<div className="flex flex-col items-center w-full max-w-sm space-y-2">
+						<IconInput
+							iconName="email"
+							type="text"
+							value={user.email}
+							onChange={(e) => {
+								editUser(e, "email");
+							}}
+							placeholder="Email"
+							iconProps={{
+								intent: "error",
+							}}
+						/>
+
+						<IconInput
+							iconName="password"
+							type="password"
+							value={user.password}
+							onChange={(e) => {
+								editUser(e, "password");
+							}}
+							placeholder="New Password"
+							iconProps={{
+								intent: "success",
+							}}
+						/>
+					</div>
+
+					<Button
+						onClick={() => {
+							sendAuthRequest();
+						}}
+						cta="Reset Password"
+						loading={status.value === "LOADING" ? true : false}
+						props={{
+							intent: "primary",
+							size: "lg",
+							w: "full",
+							className: "max-w-sm mt-6 h-10",
+						}}
+					/>
+
+					<RelativeNotification
+						text={status.message}
+						props={{
+							className: "mt-3",
 						}}
 					/>
 				</div>
 
-				<LinkedSubtitle
-					href={{
-						pathname: "/profile/resetPassword",
-					}}
-					cta="Forgot Password?"
-					linkText="Reset here."
-					mainProps={{
-						className: "mt-1",
-					}}
-				/>
-
-				<Button
-					onClick={() => {
-						sendAuthRequest();
-					}}
-					cta="Sign In"
-					loading={status.value === "LOADING" ? true : false}
-					props={{
-						intent: "primary",
-						size: "lg",
-						w: "full",
-						className: "max-w-sm mt-6 h-10",
-					}}
-				/>
-
-				<RelativeNotification
-					text={status.message}
-					props={{
-						className: "mt-3",
-					}}
-				/>
+				<div
+					className={`flex-col items-center w-full h-full
+					${status.value === "SUCCESS" ? "flex" : "hidden"}
+					`}
+				>
+					<Button
+						cta={status.message}
+						props={{
+							intent: "success",
+							size: "lg",
+							w: "full",
+							className: "max-w-6xl",
+						}}
+					/>
+				</div>
 			</div>
 		</>
 	);
 };
 
-export default You;
+export default ResetPassword;

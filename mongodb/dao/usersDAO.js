@@ -179,11 +179,13 @@ export default class UsersDAO {
 			const verificationUrl = `${req.headers.origin}/profile/verify?token=${token}`;
 
 			const transporter = nodemailer.createTransport({
-				service: "gmail",
+				// service: "gmail",
+				host: "smtp.gmail.com",
 				auth: {
 					user: process.env.NEXT_PUBLIC_GMAIL_USER,
 					pass: process.env.NEXT_PUBLIC_GMAIL_PASS,
 				},
+				secure: true,
 			});
 
 			const config = {
@@ -191,6 +193,63 @@ export default class UsersDAO {
 				to: email,
 				subject: "Test Email",
 				text: `Click here to verify -- ${verificationUrl}`,
+			};
+
+			try {
+				await transporter.sendMail(config);
+				sendKeyResponse(res, "EMAIL_SENT");
+			} catch (err) {
+				sendKeyResponse(res, "EMAIL_FAILED");
+			}
+		} catch (err) {
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
+		}
+	};
+
+	static resetPassword = async (req, res) => {
+		try {
+			const { email, password } = req.body;
+
+			if (!this.isEmailValid(res, email)) return;
+			if (!this.isPasswordValid(res, password)) return;
+
+			const emailExists = await users.findOne({
+				email: email,
+			});
+
+			if (!emailExists) {
+				sendKeyResponse(res, "USER_NOT_FOUND");
+				return;
+			}
+
+			const token = jwt.sign(
+				{
+					email: email,
+					password: await hash(password, 12),
+				},
+				process.env.NEXT_PUBLIC_JWT_SECRET,
+				{
+					allowInsecureKeySizes: true,
+					expiresIn: 10 * 60 * 1000, // 10 minutes
+				}
+			);
+
+			const verificationUrl = `${req.headers.origin}/profile/verifyPassword?token=${token}`;
+
+			const transporter = nodemailer.createTransport({
+				host: "smtp.gmail.com",
+				auth: {
+					user: process.env.NEXT_PUBLIC_GMAIL_USER,
+					pass: process.env.NEXT_PUBLIC_GMAIL_PASS,
+				},
+				secure: true,
+			});
+
+			const config = {
+				from: process.env.NEXT_PUBLIC_GMAIL_USER,
+				to: email,
+				subject: "Test Email",
+				text: `Click here to reset password -- ${verificationUrl}`,
 			};
 
 			try {
