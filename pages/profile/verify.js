@@ -13,6 +13,10 @@ const Verify = () => {
 	useEffect(() => {
 		const verifyAccount = async () => {
 			try {
+				if (Router.query.token === undefined) {
+					return;
+				}
+
 				const res = await fetch("/api/auth/verify", {
 					method: "POST",
 					headers: {
@@ -25,7 +29,7 @@ const Verify = () => {
 
 				const data = await res.json();
 
-				if (data.code !== "201") {
+				if (data.code !== 201) {
 					setStatus({
 						value: "ERROR",
 						message: data.message,
@@ -45,7 +49,7 @@ const Verify = () => {
 		};
 
 		verifyAccount();
-	}, []);
+	}, [Router]);
 
 	return (
 		<>

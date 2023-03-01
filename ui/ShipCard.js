@@ -59,18 +59,20 @@ export const ShipCard = ({ ship }) => {
 					}}
 				/>
 
-				<Link href={`/learn/${ship.path}`} className="flex flex-col items-end pb-3 pr-3 mt-auto" passHref>
-					<Button
-						cta={ship.status === "active" ? "Let's Ship!" : "Coming Soon."}
-						disabled={ship.status === "active" ? false : true}
-						props={{
-							intent: ship.status === "active" ? "primary" : "light",
-							disabled: ship.status === "active" ? "false" : "true",
-							w: "none",
-							className: "w-[130px]",
-						}}
-					/>
-				</Link>
+				<div className="flex flex-col items-end pb-3 pr-3 mt-auto">
+					<Link href={`/learn/${ship.path}`} passHref>
+						<Button
+							cta={ship.status === "active" ? "Let's Ship!" : "Coming Soon."}
+							disabled={ship.status === "active" ? false : true}
+							props={{
+								intent: ship.status === "active" ? "primary" : "light",
+								disabled: ship.status === "active" ? "false" : "true",
+								w: "none",
+								className: "w-[130px]",
+							}}
+						/>
+					</Link>
+				</div>
 			</div>
 		</>
 	);

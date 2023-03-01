@@ -96,13 +96,13 @@ const You = () => {
 							pathname: "/profile/you",
 						}}
 						cta="Have an account already?"
-						linkText="Sign In here."
+						linkText="Sign in here."
 						mainProps={{
 							className: "mt-1 mb-6",
 						}}
 					/>
 
-					<div className="flex flex-col items-center w-full max-w-xs space-y-2 md:max-w-sm">
+					<div className="flex flex-col items-center w-full max-w-sm space-y-2">
 						<IconInput
 							iconName="email"
 							type="text"
@@ -148,7 +148,7 @@ const You = () => {
 							sendAuthRequest();
 						}}
 						cta="Sign Up"
-						loading={status.value === "LOADING" ? true : false}
+						loading={status.value === "LOADING" ? "true" : "false"}
 						props={{
 							intent: "primary",
 							size: "lg",

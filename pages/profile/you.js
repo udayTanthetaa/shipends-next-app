@@ -87,83 +87,89 @@ const You = () => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen p-3 place-content-center">
-				<Heading
-					cta="Welcome to Shipends!"
-					props={{
-						className: "",
-					}}
-				/>
-
-				<LinkedSubtitle
-					href={{
-						pathname: "/profile/signUp",
-					}}
-					cta="Don't have an account?"
-					linkText="Sign Up here."
-					mainProps={{
-						className: "mt-1 mb-6",
-					}}
-				/>
-
-				<div className="flex flex-col items-center w-full max-w-xs space-y-2 md:max-w-sm">
-					<IconInput
-						iconName="user"
-						type="text"
-						value={user.username}
-						onChange={(e) => {
-							editUser(e, "username");
-						}}
-						placeholder="Username"
-						iconProps={{
-							intent: "primary",
+				<div
+					className={`flex-col items-center w-full h-full
+					${status.value === "SUCCESS" ? "hidden" : "flex"}
+					`}
+				>
+					<Heading
+						cta="Welcome to Shipends!"
+						props={{
+							className: "",
 						}}
 					/>
 
-					<IconInput
-						iconName="password"
-						type="password"
-						value={user.password}
-						onChange={(e) => {
-							editUser(e, "password");
+					<LinkedSubtitle
+						href={{
+							pathname: "/profile/signUp",
 						}}
-						placeholder="Password"
-						iconProps={{
-							intent: "success",
+						cta="Don't have an account?"
+						linkText="Sign up here."
+						mainProps={{
+							className: "mt-1 mb-6",
+						}}
+					/>
+
+					<div className="flex flex-col items-center w-full max-w-sm space-y-2">
+						<IconInput
+							iconName="user"
+							type="text"
+							value={user.username}
+							onChange={(e) => {
+								editUser(e, "username");
+							}}
+							placeholder="Username"
+							iconProps={{
+								intent: "primary",
+							}}
+						/>
+
+						<IconInput
+							iconName="password"
+							type="password"
+							value={user.password}
+							onChange={(e) => {
+								editUser(e, "password");
+							}}
+							placeholder="Password"
+							iconProps={{
+								intent: "success",
+							}}
+						/>
+					</div>
+
+					<LinkedSubtitle
+						href={{
+							pathname: "/profile/resetPassword",
+						}}
+						cta="Forgot Password?"
+						linkText="Reset here."
+						mainProps={{
+							className: "mt-1",
+						}}
+					/>
+
+					<Button
+						onClick={() => {
+							sendAuthRequest();
+						}}
+						cta="Sign In"
+						loading={status.value === "LOADING" ? true : false}
+						props={{
+							intent: "primary",
+							size: "lg",
+							w: "full",
+							className: "max-w-sm mt-6 h-10",
+						}}
+					/>
+
+					<RelativeNotification
+						text={status.message}
+						props={{
+							className: "mt-3",
 						}}
 					/>
 				</div>
-
-				<LinkedSubtitle
-					href={{
-						pathname: "/profile/resetPassword",
-					}}
-					cta="Forgot Password?"
-					linkText="Reset here."
-					mainProps={{
-						className: "mt-1",
-					}}
-				/>
-
-				<Button
-					onClick={() => {
-						sendAuthRequest();
-					}}
-					cta="Sign In"
-					loading={status.value === "LOADING" ? true : false}
-					props={{
-						intent: "primary",
-						size: "lg",
-						w: "full",
-						className: "max-w-sm mt-6 h-10",
-					}}
-				/>
-
-				<RelativeNotification
-					text={status.message}
-					props={{
-						className: "mt-3",
-					}}
-				/>
 			</div>
 		</>
 	);

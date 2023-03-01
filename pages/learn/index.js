@@ -1,6 +1,6 @@
 import { Octokit } from "octokit";
 import { Constants } from "../../components";
-import { ShipCard } from "ui";
+import { ShipCard, InvisibleNavbar } from "ui";
 
 export const getStaticProps = async () => {
 	const octokit = new Octokit({
@@ -31,7 +31,9 @@ const Learn = ({ ships }) => {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full min-h-screen p-3 place-content-start bg-isGrayLightEmphasis6">
-				<div className="grid w-full max-w-6xl grid-cols-1 gap-3 mt-28 sm:grid-cols-2 md:grid-cols-3">
+				<InvisibleNavbar />
+
+				<div className="grid w-full max-w-6xl grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
 					{ships.map((ship, index) => {
 						return <ShipCard key={index} ship={ship} />;
 					})}

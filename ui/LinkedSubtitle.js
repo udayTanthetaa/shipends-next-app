@@ -10,6 +10,7 @@ export const LinkedSubtitle = ({ href, linkText, cta, mainProps, linkProps }) =>
 					white: "text-isWhite",
 					light: "text-isGrayLightEmphasis6",
 					gray: "text-isGrayDark",
+					silver: "text-isGrayDark2",
 					dark: "text-isGrayDarkEmphasis3",
 					night: "text-isGrayDarkEmphasis6",
 					black: "text-isBlack",
@@ -59,7 +60,7 @@ export const LinkedSubtitle = ({ href, linkText, cta, mainProps, linkProps }) =>
 				},
 			},
 			defaultVariants: {
-				intent: "dark",
+				intent: "silver",
 				size: "md",
 				font: "semibold",
 				w: "full",

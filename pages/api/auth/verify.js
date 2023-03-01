@@ -8,7 +8,7 @@ const handler = async (req, res) => {
 			const client = await clientPromise;
 
 			await UsersDAO.injectDB(client);
-			await UsersDAO.verifyEmail(req, res);
+			await UsersDAO.verify(req, res);
 		} catch (err) {
 			sendResponse(res, "BAD_REQUEST");
 		}

@@ -6,15 +6,11 @@ import { Button } from "ui";
 
 export const Navbar = () => {
 	const router = useRouter();
-	const [isActive, setIsActive] = useState("");
 
 	return (
 		<>
-			<div className="fixed top-0 z-50 flex flex-col w-full items-center place-content-center p-3">
-				<div
-					className="max-w-6xl rounded-xl w-full flex flex-row justify-between items-center bg-isWhite py-2 px-3 bg-opacity-50 backdrop-blur-md
-                shadow-sm shadow-isGrayLight5"
-				>
+			<div className="fixed top-0 z-50 flex flex-col items-center w-full p-3 place-content-center">
+				<div className="flex flex-row items-center justify-between w-full max-w-6xl px-3 py-2 bg-opacity-50 shadow-sm rounded-xl bg-isWhite backdrop-blur-md shadow-isGrayLight5">
 					<Link
 						target="_self"
 						rel="noopener noreferrer"
@@ -58,7 +54,7 @@ export const Navbar = () => {
 							viewBox="0 0 24 24"
 							className={`w-9 h-9 transition duration-300 ease-in-out cursor-pointer
                             ${
-								router.asPath === "/learn"
+								router.asPath.length >= 6 && router.asPath.slice(0, 6) === "/learn"
 									? "fill-isBlueDark hover:fill-isBlueDarkEmphasis"
 									: "fill-isGrayDark hover:fill-isGrayDarkEmphasis"
 							}
@@ -88,7 +84,10 @@ export const Navbar = () => {
 							viewBox="0 0 24 24"
 							className={`w-9 h-9 transition duration-300 ease-in-out cursor-pointer
                             ${
-								router.asPath === "/profile/you"
+								router.asPath === "/profile/you" ||
+								router.asPath === "/profile/signUp" ||
+								router.asPath === "/profile/resetPassword" ||
+								router.asPath === "/profile/verify"
 									? "fill-isBlueDark hover:fill-isBlueDarkEmphasis"
 									: "fill-isGrayDark hover:fill-isGrayDarkEmphasis"
 							}

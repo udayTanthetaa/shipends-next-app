@@ -89,6 +89,23 @@ export default class UsersDAO {
 		return true;
 	};
 
+	static isAccountCreted = async (res, email, username) => {
+		const emailExists = await users.findOne({
+			email: email,
+		});
+
+		const usernameExists = await users.findOne({
+			username: username,
+		});
+
+		if (emailExists || usernameExists) {
+			sendKeyResponse(res, "SIGN_UP_SUCCESS");
+			return true;
+		}
+
+		return false;
+	};
+
 	static signIn = async (req, res) => {
 		try {
 			const { username, password } = req.body;
@@ -182,7 +199,7 @@ export default class UsersDAO {
 		}
 	};
 
-	static verifyEmail = async (req, res) => {
+	static verify = async (req, res) => {
 		try {
 			const { token } = req.body;
 
@@ -207,10 +224,7 @@ export default class UsersDAO {
 					password: user.password,
 				};
 
-				if (!this.isEmailUnique(user.email)) {
-					sendKeyResponse(res, "SIGN_UP_SUCCESS");
-					return;
-				}
+				if (this.isAccountCreted(res, email, username)) return;
 
 				const receipt = await users.insertOne(userDoc);
 

@@ -2,6 +2,7 @@ import NavigationPanel from "./NavigationPanel";
 import SectionPanel from "./SectionPanel";
 import Content from "./Content";
 import { motion } from "framer-motion";
+import { InvisibleNavbar } from "ui";
 
 const Page = ({ frontmatter, source, index }) => {
 	const container = {
@@ -27,14 +28,12 @@ const Page = ({ frontmatter, source, index }) => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start p-3 ">
-				<div className="w-full h-full max-w-6xl flex flex-col  mt-[62px] md:mt-[64px] lg:mt-[70px] ">
+			<div className="flex flex-col items-center w-full min-h-screen p-3 bg-isGrayLightEmphasis6 place-content-start ">
+				<InvisibleNavbar />
+
+				<div className="flex flex-col w-full h-full max-w-6xl ">
 					{/* <SectionPanel index={index} /> */}
-					<Content
-						className=""
-						frontmatter={frontmatter}
-						source={source}
-					/>
+					<Content className="" frontmatter={frontmatter} source={source} />
 				</div>
 			</div>
 

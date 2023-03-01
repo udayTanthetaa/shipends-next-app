@@ -7,5 +7,17 @@ import { IconInput } from "./IconInput";
 import { Heading } from "./Heading";
 import { LinkedSubtitle } from "./LinkedSubtitle";
 import { RelativeNotification } from "./RelativeNotfication";
+import { InvisibleNavbar } from "./InvisibleNavbar";
 
-export { RelativeNotification, Navbar, Button, ShipCard, Hr, Paragraph, IconInput, Heading, LinkedSubtitle };
+export {
+	InvisibleNavbar,
+	RelativeNotification,
+	Navbar,
+	Button,
+	ShipCard,
+	Hr,
+	Paragraph,
+	IconInput,
+	Heading,
+	LinkedSubtitle,
+};
