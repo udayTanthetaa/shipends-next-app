@@ -4,10 +4,9 @@ import { Analytics } from "@vercel/analytics/react";
 import { useRouter } from "next/router";
 import { PageView } from "../lib/ga";
 import { useEffect, useState } from "react";
-
-import { Navigation } from "../components";
-import SessionContext from "../session/sessionContext";
+import SessionContext from "session/sessionContext";
 import { Navbar } from "ui";
+import * as jwt from "jsonwebtoken";
 
 const App = ({ Component, pageProps: { ...pageProps } }) => {
 	const router = useRouter();
@@ -27,13 +26,42 @@ const App = ({ Component, pageProps: { ...pageProps } }) => {
 	const [session, setSession] = useState("");
 
 	useEffect(() => {
-		const token = localStorage.getItem("shipper");
-		token ? setSession(token) : setSession("");
-	}, []);
+		const authToken = localStorage.getItem("shipper");
+
+		const sendAuthRequest = async ({ token }) => {
+			try {
+				const res = await fetch("/api/auth/validateToken", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						token: token,
+					}),
+				});
+
+				const data = await res.json();
+
+				if (data.code === 201) {
+					setSession(token);
+				} else {
+					localStorage.removeItem("shipper");
+					setSession("");
+				}
+			} catch (err) {
+				localStorage.removeItem("shipper");
+				setSession("");
+			}
+		};
+
+		if (authToken !== undefined && authToken !== null && session !== authToken) {
+			sendAuthRequest({ token: authToken });
+		}
+	}, [session]);
 
 	return (
 		<>
-			<div className="font-RobotoFlex bg-isGrayLightEmphasis6 w-full flex flex-col items-center">
+			<div className="flex flex-col items-center w-full font-RobotoFlex bg-isGrayLightEmphasis6">
 				<SessionContext.Provider
 					value={{
 						state: {

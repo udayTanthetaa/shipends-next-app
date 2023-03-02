@@ -89,6 +89,31 @@ export default class UsersDAO {
 		return true;
 	};
 
+	static isTokenValid = (res, token) => {
+		try {
+			const verified = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
+
+			if (!verified) {
+				sendKeyResponse(res, "UNAUTHORIZED");
+				return false;
+			}
+
+			return true;
+		} catch (err) {
+			sendKeyResponse(res, "UNAUTHORIZED");
+			return false;
+		}
+	};
+
+	static isToken = (res, token) => {
+		if (!token) {
+			sendKeyResponse(res, "AUTH_TOKEN_MISSING");
+			return false;
+		}
+
+		return true;
+	};
+
 	static isAccountCreated = async (res, email, username) => {
 		const emailExists = await users.findOne({
 			email: email,
@@ -118,11 +143,11 @@ export default class UsersDAO {
 			if (!this.isUsernameValid(res, username)) return;
 			if (!this.isPasswordValid(res, password)) return;
 
-			const userExists = await users.findOne({
+			const userDoc = await users.findOne({
 				username: username,
 			});
 
-			if (!userExists) {
+			if (!userDoc) {
 				sendKeyResponse(res, "USER_NOT_FOUND");
 				return;
 			}
@@ -263,14 +288,53 @@ export default class UsersDAO {
 		}
 	};
 
+	static validateToken = async (req, res) => {
+		try {
+			const { token } = req.body;
+			if (!this.isToken(res, token)) return;
+			if (!this.isTokenValid(res, token)) return;
+
+			sendKeyResponse(res, "SUCCESS");
+		} catch (err) {
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
+		}
+	};
+
+	static getUser = async (req, res) => {
+		try {
+			const { token } = req.body;
+			if (!this.isToken(res, token)) return;
+			if (!this.isTokenValid(res, token)) return;
+
+			const user = jwt.decode(token);
+			if (!user.id) {
+				sendKeyResponse(res, "INVALID_AUTH_TOKEN");
+				return;
+			}
+
+			const _id = new ObjectId(user.id);
+
+			const userDoc = await users.findOne({
+				_id: _id,
+			});
+
+			if (!userDoc) sendKeyResponse(res, "USER_NOT_FOUND");
+			else
+				sendCustomResponse(res, "SUCCESS", {
+					user: {
+						username: userDoc.username,
+						email: userDoc.email,
+					},
+				});
+		} catch (err) {
+			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");
+		}
+	};
+
 	static verify = async (req, res) => {
 		try {
 			const { token } = req.body;
-
-			if (!token) {
-				sendKeyResponse(res, "AUTH_TOKEN_MISSING");
-				return;
-			}
+			if (!this.isToken(res, token)) return;
 
 			try {
 				const verified = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);

@@ -78,7 +78,12 @@ export const Button = ({ onClick, cta, disabled, loading, props, forceCta }) => 
 	});
 
 	const spinner = () => {
-		return <div className="mx-3 border-4 rounded-full w-7 h-7 animate-spin border-t-transparent border-isWhite" />;
+		return (
+			<div
+				className={`w-6 h-6 border-4 rounded-full animate-spin border-t-transparent border-isWhite
+							  ${forceCta === true ? "ml-3" : "mx-3"}`}
+			/>
+		);
 	};
 
 	return (
