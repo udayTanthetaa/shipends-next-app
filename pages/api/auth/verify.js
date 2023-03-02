@@ -1,6 +1,6 @@
 import clientPromise from "../../../mongodb";
 import UsersDAO from "../../../mongodb/dao/usersDAO";
-import { sendResponse } from "../../../responseCodes";
+import { sendKeyResponse } from "responses";
 
 const handler = async (req, res) => {
 	if (req.method === "POST") {
