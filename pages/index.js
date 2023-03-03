@@ -13,7 +13,7 @@ const Home = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className="flex flex-col items-center w-full min-h-screen bg-isGrayLightEmphasis6 place-content-start">
+			<main className="flex flex-col items-center w-full min-h-screen p-3 bg-isGrayLightEmphasis6 place-content-start">
 				<InvisibleNavbar />
 
 				<div className="flex flex-col items-center w-full max-w-6xl mt-3">
