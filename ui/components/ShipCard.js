@@ -59,7 +59,7 @@ export const ShipCard = ({ ship }) => {
 					}}
 				/>
 
-				<div className="flex flex-col items-end pb-3 pr-3 mt-auto">
+				<div className="z-20 flex flex-col items-end pb-3 pr-3 mt-auto">
 					<Link href={`/learn/${ship.path}`} passHref>
 						<Button
 							cta={ship.status === "active" ? "Let's Ship!" : "Coming Soon."}

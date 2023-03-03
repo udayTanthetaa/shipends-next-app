@@ -33,7 +33,7 @@ const Learn = ({ ships }) => {
 			<div className="flex flex-col items-center w-full min-h-screen p-3 place-content-start bg-isGrayLightEmphasis6">
 				<InvisibleNavbar />
 
-				<div className="grid w-full max-w-6xl grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+				<div className="grid w-full max-w-6xl grid-cols-1 gap-3  sm:grid-cols-2 md:grid-cols-3">
 					{ships.map((ship, index) => {
 						return <ShipCard key={index} ship={ship} />;
 					})}

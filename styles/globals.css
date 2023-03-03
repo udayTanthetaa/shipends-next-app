@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+.cursor {
+	background-color: #111;
+	height: 32px;
+	width: 32px;
+	border-radius: 50%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+}
+
 .border-animate {
 	transition: box-shadow 0.2s linear;
 }

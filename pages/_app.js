@@ -6,9 +6,38 @@ import { PageView } from "../lib/ga";
 import { useEffect, useState } from "react";
 import SessionContext from "session/sessionContext";
 import { Navbar } from "ui";
-import * as jwt from "jsonwebtoken";
+import { motion } from "framer-motion";
 
 const App = ({ Component, pageProps: { ...pageProps } }) => {
+	const [mousePosition, setMousePosition] = useState({
+		x: 0,
+		y: 0,
+	});
+
+	const [cursorVariant, setCursorVariant] = useState("default");
+
+	useEffect(() => {
+		const mouseMove = (e) => {
+			setMousePosition({
+				x: e.clientX,
+				y: e.clientY,
+			});
+		};
+
+		window.addEventListener("mousemove", mouseMove);
+
+		return () => {
+			window.removeEventListener("mousemove", mouseMove);
+		};
+	}, []);
+
+	const variants = {
+		default: {
+			x: mousePosition.x - 16,
+			y: mousePosition.y - 16,
+		},
+	};
+
 	const router = useRouter();
 
 	useEffect(() => {
@@ -70,6 +99,11 @@ const App = ({ Component, pageProps: { ...pageProps } }) => {
 						setSession: setSession,
 					}}
 				>
+					{/* <motion.div
+						className="fixed top-0 left-0 z-10 rounded-full shadow-sm bg-isGrayDarkEmphasis6 shadow-isGrayWhite w-7 h-7"
+						variants={variants}
+						animate={cursorVariant}
+					></motion.div> */}
 					<Navbar />
 					<Component {...pageProps} />
 					<Analytics />
