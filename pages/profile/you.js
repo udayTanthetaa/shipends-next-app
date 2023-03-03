@@ -4,6 +4,7 @@ import { RelativeNotification, Button, IconInput, Heading, LinkedSubtitle } from
 import { useContext } from "react";
 import SessionContext from "session/sessionContext";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const You = () => {
 	const Router = useRouter();
@@ -33,15 +34,26 @@ const You = () => {
 					const data = await res.json();
 
 					if (data.code === 201) {
-						console.log(data);
+						setStatus({
+							value: "SUCCESS",
+						});
 					} else {
-						Router.replace("/profile/signIn");
+						setStatus({
+							value: "ERROR",
+							message: "",
+						});
 					}
 				} else {
-					Router.replace("/profile/signIn");
+					setStatus({
+						value: "ERROR",
+						message: "",
+					});
 				}
 			} catch (err) {
-				Router.replace("/profile/signIn");
+				setStatus({
+					value: "ERROR",
+					message: "",
+				});
 			}
 		};
 
@@ -58,9 +70,25 @@ const You = () => {
 					props={{
 						intent: "primary",
 						size: "lg",
-						className: "h-10",
+						className: `h-10 ${status.value === "LOADING" ? "" : "hidden"}`,
 					}}
 				/>
+
+				<Link
+					href={{
+						pathname: "/profile/signIn",
+					}}
+				>
+					<Button
+						cta="Click here to Sign In."
+						forceCta={true}
+						props={{
+							intent: "primary",
+							size: "lg",
+							className: `${status.value === "ERROR" ? "" : "hidden"}`,
+						}}
+					/>
+				</Link>
 			</div>
 		</>
 	);

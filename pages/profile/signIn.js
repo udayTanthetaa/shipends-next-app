@@ -3,8 +3,11 @@ import validator from "validator";
 import { RelativeNotification, Button, IconInput, Heading, LinkedSubtitle } from "ui";
 import { useContext } from "react";
 import SessionContext from "session/sessionContext";
+import { useRouter } from "next/router";
 
 const SignIn = () => {
+	const Router = useRouter();
+
 	const currSession = useContext(SessionContext);
 	let { session } = currSession.state;
 
@@ -63,6 +66,8 @@ const SignIn = () => {
 
 				currSession.setSession(data.token);
 				localStorage.setItem("shipper", data.token);
+
+				Router.replace("/profile/you");
 			} else {
 				setStatus({
 					value: "PENDING",
@@ -168,7 +173,7 @@ const SignIn = () => {
 						text={status.message}
 						props={{
 							intent: status.value === "SUCCESS" ? "success" : "error",
-							className: "mt-3",
+							className: `mt-3 ${status.value === "SUCCESS" ? "hidden" : ""}`,
 						}}
 					/>
 				</div>
