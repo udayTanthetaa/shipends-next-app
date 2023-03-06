@@ -17,7 +17,7 @@ const handler = async (req, res) => {
 			if (!isPasswordValid(res, password)) return;
 
 			// signing up
-			await UsersDAO.signUp(email, username, password, res);
+			await UsersDAO.signUp(email, username, password, req, res);
 		} catch (err) {
 			sendKeyResponse(res, "BAD_REQUEST");
 		}

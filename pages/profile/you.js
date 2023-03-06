@@ -33,6 +33,8 @@ const You = () => {
 
 					const data = await res.json();
 
+					console.log(data);
+
 					if (data.code === 201) {
 						setStatus({
 							value: "SUCCESS",

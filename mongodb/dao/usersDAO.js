@@ -92,7 +92,7 @@ export default class UsersDAO {
 		}
 	};
 
-	static signUp = async (email, username, password, res) => {
+	static signUp = async (email, username, password, req, res) => {
 		try {
 			if (!(await this.isUsernameUnique(res, username))) return;
 			if (!(await this.isEmailUnique(res, email))) return;
@@ -150,6 +150,7 @@ export default class UsersDAO {
 			if (await this.isAccountCreated(res, email, username)) return;
 
 			const receipt = await users.insertOne(userDoc);
+
 			receipt.insertedId ? sendKeyResponse(res, "SIGN_UP_SUCCESS") : sendKeyResponse(res, "SOMETHING_WENT_WRONG");
 		} catch (err) {
 			sendKeyResponse(res, "INTERNAL_SERVER_ERROR");

@@ -71,7 +71,7 @@ const Verify = () => {
 					target="_self"
 					rel="noopener noreferrer"
 					href={{
-						pathname: "/profile/you",
+						pathname: "/profile/signIn",
 					}}
 				>
 					<Button
