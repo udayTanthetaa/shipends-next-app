@@ -13,7 +13,7 @@ const Content = ({ frontmatter, source }) => {
 
 			<div className="flex flex-col items-start w-full place-content-center">
 				<div className="flex flex-col w-full rounded-b-xl bg-isWhite text-isGrayDarkEmphasis3 ">
-					<div className="px-3 text-sm break-words md:text-md md:px-9 md:py-3">
+					<div className="px-5 py-3 text-sm break-words md:px-8 md:text-md">
 						<MDXRemote components={MDXComponents} {...source} />
 					</div>
 				</div>

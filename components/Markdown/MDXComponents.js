@@ -11,11 +11,8 @@ const MDXComponents = {
 	h2: (props) => {
 		return (
 			<>
-				<h2
-					className="py-1 md:py-2 text-lg md:text-xl font-semibold text-isGrayDarkEmphasis5"
-					{...props}
-				/>
-				<hr className="pb-2 md:pb-3 border-t-2 border-isGrayLightEmphasis5" />
+				<h2 className="py-1 text-lg font-semibold md:py-2 md:text-xl text-isGrayDarkEmphasis5" {...props} />
+				<hr className="pb-2 border-t-2 md:pb-3 border-isGrayLightEmphasis5" />
 			</>
 		);
 	},
@@ -23,7 +20,7 @@ const MDXComponents = {
 		return (
 			<>
 				<h3
-					className="py-1 md:py-2 text-lg md:text-xl font-semibold text-isGrayDarkEmphasis5 rounded-xl text-center"
+					className="w-full px-3 py-2 text-lg font-semibold leading-tight text-center bg-isGrayLightEmphasis3 md:text-xl text-isGrayDarkEmphasis5 rounded-xl"
 					{...props}
 				/>
 			</>
@@ -49,7 +46,7 @@ const MDXComponents = {
 		if (props.href.slice(0, 2) === "./") {
 			return (
 				<Link
-					className="inline-block transition duration-300 ease-in-out text-isBlueDarkEmphasis hover:cursor-pointer border-b-2 border-transparent hover:border-isBlueDarkEmphasis"
+					className="inline-block transition duration-300 ease-in-out border-b-2 border-transparent text-isBlueDarkEmphasis hover:cursor-pointer hover:border-isBlueDark"
 					href={{
 						pathname: "/learn/[ship]/[sail]",
 						query: {
@@ -64,22 +61,15 @@ const MDXComponents = {
 		} else if (props.href.charAt(0) === "#") {
 			return (
 				<div className="flex flex-row group">
-					<Link
-						target="_self"
-						rel="noopener noreferrer"
-						passHref
-						{...props}
-					/>
+					<Link target="_self" rel="noopener noreferrer" passHref {...props} />
 					&nbsp;
-					<div className="hidden font-bold text-isGrayDark2 group-hover:block">
-						#
-					</div>
+					<div className="hidden font-bold text-isGrayDark2 group-hover:block">#</div>
 				</div>
 			);
 		} else {
 			return (
 				<Link
-					className="inline-block transition duration-300 ease-in-out text-isBlueDarkEmphasis hover:cursor-pointer border-b-2 border-transparent hover:border-isBlueDarkEmphasis"
+					className="inline-block transition duration-300 ease-in-out border-b-2 border-transparent text-isBlueDarkEmphasis hover:cursor-pointer hover:border-isBlueDark"
 					target="_blank"
 					rel="noopener noreferrer"
 					passHref
@@ -91,12 +81,9 @@ const MDXComponents = {
 	blockquote: (props) => {
 		return (
 			<>
-				<div className="pb-3 flex flex-col w-full">
-					<blockquote className="flex flex-col items-start text-sm md:text-md px-2 py-1 leading-tight tracking-wide border-l-4 rounded-r-xl border-isGrayLightEmphasis4 bg-isGrayLightEmphasis6">
-						<div
-							className="mt-3 ml-2 mr-2 text-isGrayDark3"
-							{...props}
-						/>
+				<div className="flex flex-col w-full pb-3">
+					<blockquote className="flex flex-col items-start px-2 py-1 text-xs leading-tight tracking-wide border-l-4 md:text-sm rounded-r-xl border-isGrayLightEmphasis4 bg-isGrayLightEmphasis6">
+						<div className="mt-3 ml-2 mr-2 text-isGrayDark3" {...props} />
 					</blockquote>
 				</div>
 			</>
@@ -107,14 +94,14 @@ const MDXComponents = {
 	},
 	ul: (props) => {
 		return (
-			<div className="mb-2 ml-3 list-disc leading-tight">
+			<div className="mb-2 ml-3 leading-tight list-disc">
 				<div className="mb-2" {...props} />
 			</div>
 		);
 	},
 	ol: (props) => {
 		return (
-			<div className="mb-2 ml-3 list-decimal leading-tight">
+			<div className="mb-2 ml-3 leading-tight list-decimal">
 				<div className="mb-2" {...props} />
 			</div>
 		);
@@ -125,15 +112,15 @@ const MDXComponents = {
 	code: (props) => {
 		return (
 			<span
-				className="inline-block px-2 py-0 font-mono text-sm font-medium align-middle rounded-md md:text-md bg-isGrayLightEmphasis6 text-isGrayDarkEmphasis3"
+				className="inline-block px-2 py-0 font-mono text-xs font-medium align-middle rounded-md md:text-sm bg-isGrayLightEmphasis6 text-isGrayDarkEmphasis3"
 				{...props}
 			/>
 		);
 	},
 	pre: (props) => {
 		return (
-			<pre className="p-3 mb-3 overflow-x-auto text-sm rounded-xl md:text-md bg-isGrayLightEmphasis6">
-				<code className="font-mono" {...props} />
+			<pre className="p-3 mb-3 overflow-x-auto text-xs rounded-xl md:text-sm bg-isGrayLightEmphasis6">
+				<code className="font-mono text-xs sm:text-sm" {...props} />
 			</pre>
 		);
 	},

@@ -31,7 +31,7 @@ const Page = ({ frontmatter, source, index }) => {
 			<div className="flex flex-col items-center w-full min-h-screen p-3 bg-isGrayLightEmphasis6 place-content-start ">
 				<InvisibleNavbar />
 
-				<div className="flex flex-col w-full h-full max-w-6xl ">
+				<div className="flex flex-col w-full h-full max-w-6xl shadow-sm shadow-isGrayLightEmphasis3 rounded-xl">
 					{/* <SectionPanel index={index} /> */}
 					<Content className="" frontmatter={frontmatter} source={source} />
 				</div>
